@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from 'reducers';
 import { TabNavigator } from 'react-navigation';
-import { TodayNavigator } from './today/TodayScreen';
+import TodayNavigator from './today/TodayNavigator';
 import { MonthNavigator } from './month/MonthScreen';
 import { FilterNavigator } from './filter/FilterScreen';
 
-const App = TabNavigator({
+const AppNavigator = TabNavigator({
         Today: { 
             screen: TodayNavigator,
             navigationOptions: {
@@ -13,7 +16,8 @@ const App = TabNavigator({
                 tabBarIcon: ({ tintColor }) => (
                     <Image
                       source={require('images/ic_clock.png')}
-                      style={[{tintColor: tintColor}]}/>
+                      style={[{tintColor: tintColor}]}
+                    />
                 )
             }
         },
@@ -26,7 +30,23 @@ const App = TabNavigator({
     },
     {
         tabBarPosition: 'bottom',
-         animationEnabled: true
+        animationEnabled: true,
+        swipeEnabled: false,
+        tabBarOptions: {
+            showIcon: true
+        }
     }
 );
-export default () => <App />;
+
+const store = createStore(rootReducer);
+
+export default class App extends Component {
+    render() {
+        return (
+            <Provider store={store}>
+                <AppNavigator />
+            </Provider>
+        );
+    }
+}
+App.router = AppNavigator.router;

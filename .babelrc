@@ -7,7 +7,9 @@
       "alias": {
         "components": "./app/components",
         "images": "./app/images",
-        "containers": "./app/containers"
+        "containers": "./app/containers",
+        "actions": "./app/actions",
+        "reducers": "./app/reducers"
       }
     }]
   ]
