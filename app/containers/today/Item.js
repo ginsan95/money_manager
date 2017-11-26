@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, Button, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import PropTypes from 'prop-types'
 
 export default class Item extends Component {
