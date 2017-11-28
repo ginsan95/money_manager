@@ -20,7 +20,7 @@ export default class Item extends Component {
                             <Text style={styles.name}>{item.name}</Text>
                             <View style={styles.price}>
                                 <Text>$</Text>
-                                <Text style={styles.priceBox}>{item.price}</Text>
+                                <Text style={styles.priceBox}>{item.price.toFixed(2)}</Text>
                             </View>
                         </View>
                     </View>

@@ -5,10 +5,16 @@ import Item from './Item';
 import { connect } from 'react-redux';
 
 class ItemList extends Component {
+    sortItems() {
+        return this.props.items.sort((item1, item2) => {
+            return item1.date.getTime() > item2.date.getTime();
+        });
+    }
+
     render() {
         return (
             <FlatList
-                data={this.props.items}
+                data={this.sortItems()}
                 renderItem={
                     ({item}) => <Item item={item} handleClick={this.props.handleItemClick}/>
                 }

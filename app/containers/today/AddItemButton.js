@@ -80,7 +80,7 @@ export default class AddItemButton extends Component {
                 pricePlaceHolder: PRICE_ERROR_PLACEHOLDER
             });
         } else {
-            this.props.handleAddItem(name, parseInt(price, 0), date);
+            this.props.handleAddItem(name, parseFloat(price, 0), date);
             this.setState({
                 dialogVisible: false
             });
