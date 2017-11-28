@@ -50,7 +50,8 @@ TodayScreen.propTypes = {
         PropTypes.shape({
             id: PropTypes.number.isRequired,
             name: PropTypes.string.isRequired,
-            price: PropTypes.number.isRequired
+            price: PropTypes.number.isRequired,
+            date: PropTypes.object.isRequired
         }).isRequired
     ).isRequired,
     handleAddItem: PropTypes.func.isRequired,
@@ -65,8 +66,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleAddItem: (name, price) => {
-            dispatch(addItem(name, price))
+        handleAddItem: (name, price, date) => {
+            dispatch(addItem(name, price, date))
         },
         handleItemClick: (id) => {
             dispatch(deleteItem(id));

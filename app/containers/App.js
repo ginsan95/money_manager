@@ -7,6 +7,7 @@ import { TabNavigator } from 'react-navigation';
 import TodayNavigator from './today/TodayNavigator';
 import { MonthNavigator } from './month/MonthScreen';
 import { FilterNavigator } from './filter/FilterScreen';
+import 'ObjectsExtension';
 
 const AppNavigator = TabNavigator({
         Today: { 

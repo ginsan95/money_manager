@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "16.0.0",
     "react-native": "0.50.3",
+    "react-native-modal-datetime-picker": "^4.13.0",
     "react-native-simple-dialogs": "^0.3.1",
     "react-navigation": "^1.0.0-beta.21",
     "react-redux": "^5.0.6",

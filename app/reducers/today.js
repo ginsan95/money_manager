@@ -7,9 +7,10 @@ const items = (state = [], action) => {
             return [
                 ...state,
                 {
+                    id: action.id,
                     name: action.name,
                     price: action.price,
-                    id: action.id
+                    date: action.date
                 }
             ];
         case DELETE_ITEM:

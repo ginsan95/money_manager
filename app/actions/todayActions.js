@@ -2,12 +2,13 @@ import { ADD_ITEM, DELETE_ITEM } from './actionTypes';
 
 let id = 1;
 
-export const addItem = (name, price) => {
+export const addItem = (name, price, date) => {
     return {
         type: ADD_ITEM,
         id: id++,
         name,
-        price
+        price,
+        date
     }
 }
 
