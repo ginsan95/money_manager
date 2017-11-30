@@ -15,7 +15,7 @@ export default class Item extends Component {
             <View style={styles.container}>
                 <TouchableWithoutFeedback onPress={this.handleClick}>
                     <View>
-                        <Text style={styles.date}>{item.date.toMyTimeString()}</Text>
+                        {/* <Text style={styles.date}>{item.date.toMyTimeString()}</Text> */}
                         <View style={styles.detail}>
                             <Text style={styles.name}>{item.name}</Text>
                             <View style={styles.price}>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 
 Item.propTypes = {
     item: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
         date: PropTypes.object.isRequired

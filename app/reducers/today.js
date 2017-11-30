@@ -1,4 +1,4 @@
-import { ADD_ITEM, DELETE_ITEM } from 'actions/actionTypes';
+import { ADD_ITEM, DELETE_ITEM, FETCH_ITEMS } from 'actions/actionTypes';
 import { combineReducers } from 'redux'
 
 const items = (state = [], action) => {
@@ -17,12 +17,24 @@ const items = (state = [], action) => {
             return state.filter(item => {
                 return item.id !== action.id
             });
+        case FETCH_ITEMS:
+            return !action.isFetching ? action.items : state;
+        default:
+            return state;
+    }
+}
+
+const isFetching = (state = false, action) => {
+    switch (action.type) {
+        case FETCH_ITEMS:
+            return action.isFetching;
         default:
             return state;
     }
 }
 
 const today = combineReducers ({
-    items
+    items,
+    isFetching
 });
 export default today;

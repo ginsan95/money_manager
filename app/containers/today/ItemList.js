@@ -19,6 +19,8 @@ class ItemList extends Component {
                     ({item}) => <Item item={item} handleClick={this.props.handleItemClick}/>
                 }
                 keyExtractor={(item, index) => index}
+                onRefresh={this.props.refreshItems}
+                refreshing={this.props.isFetching}
                 style={styles.container}
             />
         );
@@ -35,12 +37,13 @@ const styles = StyleSheet.create({
 ItemList.propTypes = {
     items: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.number.isRequired,
+            id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             price: PropTypes.number.isRequired,
             date: PropTypes.object.isRequired
         }).isRequired
     ).isRequired,
+    isFetching: PropTypes.bool.isRequired,
     handleItemClick: PropTypes.func.isRequired
 }
 

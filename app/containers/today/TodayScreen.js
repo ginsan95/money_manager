@@ -3,7 +3,7 @@ import { View, Text, Button } from 'react-native';
 import { Container } from 'components/Container';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addItem, deleteItem } from 'actions/todayActions';
+import { addItem, deleteItem, fetchItems } from 'actions/todayActions';
 import ItemList from './ItemList';
 import AddItemButton from './AddItemButton';
 
@@ -38,7 +38,12 @@ class TodayScreen extends Component {
         return (
             <Container>
                 <Text>Date: {date.toDateString()}</Text>
-                <ItemList items={this.props.items} handleItemClick={this.props.handleItemClick}/>
+                <ItemList 
+                    items={this.props.items} 
+                    handleItemClick={this.props.handleItemClick} 
+                    refreshItems={this.props.refreshItems}
+                    isFetching={this.props.isFetching}
+                />
                 <Text>Total: ${this.calculateTotal()}</Text>
             </Container>
         );
@@ -48,19 +53,21 @@ class TodayScreen extends Component {
 TodayScreen.propTypes = {
     items: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.number.isRequired,
+            id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             price: PropTypes.number.isRequired,
             date: PropTypes.object.isRequired
         }).isRequired
     ).isRequired,
+    isFetching: PropTypes.bool.isRequired,
     handleAddItem: PropTypes.func.isRequired,
     handleItemClick: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {
     return {
-        items: state.today.items
+        items: state.today.items,
+        isFetching: state.today.isFetching
     }
 }
 
@@ -71,6 +78,9 @@ const mapDispatchToProps = dispatch => {
         },
         handleItemClick: (id) => {
             dispatch(deleteItem(id));
+        },
+        refreshItems: () => {
+            dispatch(fetchItems());
         }
     }
 }

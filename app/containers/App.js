@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import rootReducer from 'reducers';
+import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger'
+
 import { TabNavigator } from 'react-navigation';
 import TodayNavigator from './today/TodayNavigator';
 import { MonthNavigator } from './month/MonthScreen';
@@ -39,7 +42,11 @@ const AppNavigator = TabNavigator({
     }
 );
 
-const store = createStore(rootReducer);
+const loggerMiddleware = createLogger()
+const store = createStore(
+    rootReducer,
+    applyMiddleware(thunkMiddleware, loggerMiddleware)
+);
 
 export default class App extends Component {
     render() {
