@@ -9,11 +9,15 @@ import AddItemButton from './AddItemButton';
 
 class TodayScreen extends Component {
     static navigationOptions = ({navigation}) => {
-        if (navigation.state.params != null) {
+        const {params} = navigation.state;
+        if (params != null) {
             return {
                 title: 'Today\'s Spending',
                 headerRight: (
-                    <AddItemButton handleAddItem={navigation.state.params.handleAddItem}/>
+                    <AddItemButton 
+                        handleAddItem={params.handleAddItem}
+                        isProcessing={params.isProcessing}
+                    />
                 )
             }
         }
@@ -21,8 +25,17 @@ class TodayScreen extends Component {
 
     componentWillMount() {
         this.props.navigation.setParams({
-            handleAddItem: this.props.handleAddItem
+            handleAddItem: this.props.handleAddItem,
+            isProcessing: this.props.api.isProcessing
         });
+    }
+
+    componentWillUpdate(nextProps) {
+        if (this.props.api.isProcessing !== nextProps.api.isProcessing) {
+            this.props.navigation.setParams({
+                isProcessing: nextProps.api.isProcessing
+            });
+        }
     }
 
     calculateTotal = () => {
@@ -42,7 +55,7 @@ class TodayScreen extends Component {
                     items={this.props.items} 
                     handleItemClick={this.props.handleItemClick} 
                     refreshItems={this.props.refreshItems}
-                    isFetching={this.props.isFetching}
+                    isFetching={this.props.api.isFetching}
                 />
                 <Text>Total: ${this.calculateTotal()}</Text>
             </Container>
@@ -59,22 +72,22 @@ TodayScreen.propTypes = {
             date: PropTypes.object.isRequired
         }).isRequired
     ).isRequired,
-    isFetching: PropTypes.bool.isRequired,
+    api: PropTypes.shape({
+        isFetching: PropTypes.bool.isRequired,
+        isProcessing: PropTypes.bool.isRequired        
+    }),
     handleAddItem: PropTypes.func.isRequired,
     handleItemClick: PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => {
-    return {
-        items: state.today.items,
-        isFetching: state.today.isFetching
-    }
+const mapStateToProps = (state, ownProps) => {
+    return state.today;
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        handleAddItem: (name, price, date) => {
-            dispatch(addItem(name, price, date))
+        handleAddItem: (item) => {
+            dispatch(addItem(item))
         },
         handleItemClick: (id) => {
             dispatch(deleteItem(id));

@@ -1,17 +1,5 @@
 import { ADD_ITEM, DELETE_ITEM, FETCH_ITEMS } from './actionTypes';
-import { getItems } from '../api/API';
-
-let id = 1;
-
-export function addItem(name, price, date) {
-    return {
-        type: ADD_ITEM,
-        id: id++,
-        name,
-        price,
-        date
-    }
-}
+import { getItems, postItem } from '../api/API';
 
 export function deleteItem(id) {
     return {
@@ -61,3 +49,32 @@ function convertItems(json) {
     }
     return items;
 }
+
+export function addItemAction(isProcessing, item = null, error = null) {
+    return {
+        type: ADD_ITEM,
+        isProcessing,
+        item,
+        error
+    }
+}
+
+export function addItem(item) {
+    return async dispatch => {
+        dispatch(addItemAction(true));
+        try {
+            const json = await postItem(item);
+            if (json.objectId) {
+                dispatch(addItemAction(false, {
+                    ...item,
+                    id: json.objectId
+                }));
+            } else {
+                dispatch(addItemAction(false, null, "Failed to add item"));
+            }
+        } catch (e) {
+            dispatch(addItemAction(false, null, e));
+        }
+    }
+}
+

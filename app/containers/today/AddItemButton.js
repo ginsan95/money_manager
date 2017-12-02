@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { Dialog } from 'react-native-simple-dialogs';
+import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
 import PropTypes from 'prop-types';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { postItem } from '../../api/API';
 
 const NAME_PLACEHOLDER = 'Name';
 const NAME_ERROR_PLACEHOLDER = 'Name cannot be empty';
@@ -80,9 +81,13 @@ export default class AddItemButton extends Component {
                 pricePlaceHolder: PRICE_ERROR_PLACEHOLDER
             });
         } else {
-            this.props.handleAddItem(name, parseFloat(price, 0), date);
             this.setState({
                 dialogVisible: false
+            });
+            this.props.handleAddItem({
+                name,
+                price: parseFloat(price, 0),
+                date
             });
         }
     }
@@ -126,6 +131,10 @@ export default class AddItemButton extends Component {
                         <Button title="Add" onPress={this.handleAddItem}/>
                     </View>
                 </Dialog>
+                <ProgressDialog 
+                    visible={this.props.isProcessing} 
+                    message="Adding item..."
+                />
             </View>
         );
     }
@@ -142,5 +151,6 @@ const styles = StyleSheet.create({
 });
 
 AddItemButton.propTypes = {
-    handleAddItem: PropTypes.func.isRequired
+    handleAddItem: PropTypes.func.isRequired,
+    isProcessing: PropTypes.bool.isRequired
 }

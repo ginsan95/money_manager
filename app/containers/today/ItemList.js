@@ -11,6 +11,10 @@ class ItemList extends Component {
         });
     }
 
+    componentDidMount() {
+        this.props.refreshItems();
+    }
+
     render() {
         return (
             <FlatList
