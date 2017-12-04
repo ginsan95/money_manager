@@ -5,15 +5,30 @@ import PropTypes from 'prop-types';
 export default class Item extends Component {
     handleClick = () => {
         const {id} = item = this.props.item;
-        this.props.handleClick(id);
+        if (this.props.isEditing) {
+            this.props.handleLongClick(id);
+        }
+    }
+
+    handleLongClick = () => {
+        const {id} = item = this.props.item;
+        this.props.handleLongClick(id);
+    }
+
+    getViewStyle() {
+        if (this.props.isEditing && this.props.item.isSelected) {
+            return [styles.container, styles.selected];
+        } else {
+            return styles.container;
+        }
     }
 
     render() {
         item = this.props.item;
 
         return (
-            <View style={styles.container}>
-                <TouchableWithoutFeedback onPress={this.handleClick}>
+            <View style={this.getViewStyle()}>
+                <TouchableWithoutFeedback onPress={this.handleClick} onLongPress={this.handleLongClick}>
                     <View>
                         <Text style={styles.date}>{item.date.toMyTimeString()}</Text>
                         <View style={styles.detail}>
@@ -33,8 +48,9 @@ export default class Item extends Component {
 const styles = StyleSheet.create({
     container: {
         borderBottomWidth: 1,
+        padding: 4,
         paddingBottom: 6,
-        marginBottom: 8
+        paddingTop: 8,
     },
     date: {
         fontSize: 10
@@ -57,6 +73,9 @@ const styles = StyleSheet.create({
         paddingLeft: 4,
         paddingRight: 4,
         marginLeft: 4
+    },
+    selected: {
+        backgroundColor: '#4da3ff'
     }
 });
 
@@ -65,7 +84,9 @@ Item.propTypes = {
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
-        date: PropTypes.object.isRequired
+        date: PropTypes.object.isRequired,
+        isSelected: PropTypes.bool.isRequired
     }).isRequired,
-    handleClick: PropTypes.func.isRequired
+    handleLongClick: PropTypes.func.isRequired,
+    isEditing: PropTypes.bool.isRequired 
 }

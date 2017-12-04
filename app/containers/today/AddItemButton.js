@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { Dialog, ProgressDialog } from 'react-native-simple-dialogs';
+import { Dialog } from 'react-native-simple-dialogs';
 import PropTypes from 'prop-types';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { postItem } from '../../api/API';
@@ -131,10 +131,6 @@ export default class AddItemButton extends Component {
                         <Button title="Add" onPress={this.handleAddItem}/>
                     </View>
                 </Dialog>
-                <ProgressDialog 
-                    visible={this.props.isProcessing} 
-                    message="Adding item..."
-                />
             </View>
         );
     }
@@ -151,6 +147,5 @@ const styles = StyleSheet.create({
 });
 
 AddItemButton.propTypes = {
-    handleAddItem: PropTypes.func.isRequired,
-    isProcessing: PropTypes.bool.isRequired
+    handleAddItem: PropTypes.func.isRequired
 }

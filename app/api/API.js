@@ -25,3 +25,12 @@ export async function postItem(item) {
     const json = await response.json();
     return json;
 }
+
+export async function deleteItem(id) {
+    const url = API_URL + API_ITEMS + '/' + id;
+    const response = await fetch(url, {
+        method: 'DELETE'
+    });
+    const json = await response.json();
+    return json;
+}

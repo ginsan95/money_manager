@@ -20,7 +20,11 @@ class ItemList extends Component {
             <FlatList
                 data={this.sortItems()}
                 renderItem={
-                    ({item}) => <Item item={item} handleClick={this.props.handleItemClick}/>
+                    ({item}) => <Item 
+                        item={item} 
+                        handleLongClick={this.props.handleLongSelectItem}
+                        isEditing={this.props.isEditing}
+                    />
                 }
                 keyExtractor={(item, index) => index}
                 onRefresh={this.props.refreshItems}
@@ -48,7 +52,7 @@ ItemList.propTypes = {
         }).isRequired
     ).isRequired,
     isFetching: PropTypes.bool.isRequired,
-    handleItemClick: PropTypes.func.isRequired
+    isEditing: PropTypes.bool.isRequired
 }
 
 export default connect()(ItemList);
