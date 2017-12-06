@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types'
-import Item from './Item';
+import ItemCell from './ItemCell';
 import { connect } from 'react-redux';
+import Item from '../../models/Item';
 
 class ItemList extends Component {
     sortItems() {
@@ -20,7 +21,7 @@ class ItemList extends Component {
             <FlatList
                 data={this.sortItems()}
                 renderItem={
-                    ({item}) => <Item 
+                    ({item}) => <ItemCell 
                         item={item} 
                         handleLongClick={this.props.handleLongSelectItem}
                         isEditing={this.props.isEditing}
@@ -44,12 +45,7 @@ const styles = StyleSheet.create({
 
 ItemList.propTypes = {
     items: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            price: PropTypes.number.isRequired,
-            date: PropTypes.object.isRequired
-        }).isRequired
+        PropTypes.instanceOf(Item).isRequired
     ).isRequired,
     isFetching: PropTypes.bool.isRequired,
     isEditing: PropTypes.bool.isRequired

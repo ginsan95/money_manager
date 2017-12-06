@@ -7,6 +7,7 @@ import { addItem, deleteItems, fetchItems, longSelectItem, dismissEditing } from
 import ItemList from './ItemList';
 import AddItemButton from './AddItemButton';
 import { ProgressDialog } from 'react-native-simple-dialogs';
+import Item from '../../models/Item';
 
 class TodayScreen extends Component {
     static navigationOptions = ({navigation}) => {
@@ -88,12 +89,7 @@ class TodayScreen extends Component {
 
 TodayScreen.propTypes = {
     items: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            price: PropTypes.number.isRequired,
-            date: PropTypes.object.isRequired
-        }).isRequired
+        PropTypes.instanceOf(Item).isRequired
     ).isRequired,
     api: PropTypes.shape({
         isFetching: PropTypes.bool.isRequired,

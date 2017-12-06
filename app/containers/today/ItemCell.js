@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import Item from '../../models/Item';
 
-export default class Item extends Component {
+export default class ItemCell extends Component {
     handleClick = () => {
         const {id} = item = this.props.item;
         if (this.props.isEditing) {
@@ -24,7 +25,7 @@ export default class Item extends Component {
     }
 
     render() {
-        item = this.props.item;
+        const item = this.props.item;
 
         return (
             <View style={this.getViewStyle()}>
@@ -79,14 +80,8 @@ const styles = StyleSheet.create({
     }
 });
 
-Item.propTypes = {
-    item: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        date: PropTypes.object.isRequired,
-        isSelected: PropTypes.bool.isRequired
-    }).isRequired,
+ItemCell.propTypes = {
+    item: PropTypes.instanceOf(Item).isRequired,
     handleLongClick: PropTypes.func.isRequired,
     isEditing: PropTypes.bool.isRequired 
 }

@@ -7,24 +7,10 @@ const apiState = {
     isEditing: false
 }
 
-function item(action) {
-    const {item, error, isProcessing} = action;
-    if (item) {
-        return {
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            date: item.date,
-            isSelected: false
-        } 
-    }
-    return null;
-}
-
 function items(state = [], action) {
     switch (action.type) {
         case ADD_ITEM:
-            const myItem = item(action);
+            const myItem = action.item;
             return myItem ? [...state, myItem] : state;
         case DELETE_ITEM:
             return state.filter(item => {

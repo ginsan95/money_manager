@@ -1,5 +1,6 @@
 import { ADD_ITEM, DELETE_ITEM, FETCH_ITEMS, LONG_SELECT_ITEM, DISMISS_EDITING } from './actionTypes';
 import { getItems, postItem, deleteItem as apiDeleteItem } from '../api/API';
+import Item from '../models/Item';
 
 // region Fetch Items
 export function requestItems() {
@@ -33,14 +34,7 @@ export function fetchItems() {
 function convertItems(json) {
     let items = [];
     for(let i=0; i<json.length; i++) {
-        item = json[i];
-        items[i] = {
-            id: item.objectId,
-            name: item.name,
-            price: item.price,
-            date: new Date(item.buy_date),
-            isSelected: false
-        }
+        items[i] = Item.fromJson(json[i]);
     }
     return items;
 }
@@ -62,11 +56,7 @@ export function addItem(item) {
         try {
             const json = await postItem(item);
             if (json.objectId) {
-                dispatch(addItemAction(false, {
-                    ...item,
-                    id: json.objectId,
-                    isSelected: false
-                }));
+                dispatch(addItemAction(false, item.update(json.objectId)));
             } else {
                 dispatch(addItemAction(false, null, json));
             }

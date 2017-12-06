@@ -4,6 +4,7 @@ import { Dialog } from 'react-native-simple-dialogs';
 import PropTypes from 'prop-types';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { postItem } from '../../api/API';
+import Item from '../../models/Item';
 
 const NAME_PLACEHOLDER = 'Name';
 const NAME_ERROR_PLACEHOLDER = 'Name cannot be empty';
@@ -11,15 +12,13 @@ const PRICE_PLACEHOLDER = 'Price';
 const PRICE_ERROR_PLACEHOLDER = 'Price cannot be empty';
 
 export default class AddItemButton extends Component {
-    initialState = () => {
-        return {
-            name: '',
-            price: '',
-            date: new Date(),
-            namePlaceholder: NAME_PLACEHOLDER,
-            pricePlaceHolder: PRICE_PLACEHOLDER,
-            datePickerVisible: false
-        }
+    initialState = {
+        name: '',
+        price: '',
+        date: new Date(),
+        namePlaceholder: NAME_PLACEHOLDER,
+        pricePlaceHolder: PRICE_PLACEHOLDER,
+        datePickerVisible: false
     }
 
     constructor(props) {
@@ -84,11 +83,7 @@ export default class AddItemButton extends Component {
             this.setState({
                 dialogVisible: false
             });
-            this.props.handleAddItem({
-                name,
-                price: parseFloat(price, 0),
-                date
-            });
+            this.props.handleAddItem(new Item(name, parseFloat(price, 0), date));
         }
     }
 
