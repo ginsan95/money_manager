@@ -5,7 +5,7 @@ import ItemCell from './ItemCell';
 import { connect } from 'react-redux';
 import Item from '../../models/Item';
 
-class ItemList extends Component {
+export default class ItemList extends Component {
     sortItems() {
         return this.props.items.sort((item1, item2) => {
             return item1.date.getTime() > item2.date.getTime();
@@ -50,5 +50,3 @@ ItemList.propTypes = {
     isFetching: PropTypes.bool.isRequired,
     isEditing: PropTypes.bool.isRequired
 }
-
-export default connect()(ItemList);

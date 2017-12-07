@@ -1,15 +1,25 @@
 import { StackNavigator } from 'react-navigation';
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, SectionList, Text } from 'react-native';
+import MonthlyItemList from './MonthlyItemList';
+import { Container } from '../../components/Container';
 
-export class MonthScreen extends Component {
+export default class MonthScreen extends Component {
+    static navigationOptions = ({navigation}) => {
+        const {params} = navigation.state;
+        if (params != null) {
+            return {
+                title: 'Monthly Spending'
+            }
+        }
+    }
+
     render() {
         return (
-            <View/>
+            <Container>
+                <MonthlyItemList
+                />
+            </Container>
         );
     }
 }
-
-export const MonthNavigator = StackNavigator({
-    Home: { screen: MonthScreen }
-});
