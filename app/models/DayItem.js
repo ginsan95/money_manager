@@ -10,7 +10,7 @@ export default class DayItem {
 
         let totalPrice = 0;
         for (let i=0; i<items.length; i++) {
-            totalPrice += items.price;
+            totalPrice += items[0].price;
         }
         this.totalPrice = totalPrice;
     }

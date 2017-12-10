@@ -1,16 +1,18 @@
 import { StackNavigator } from 'react-navigation';
 import React, { Component } from 'react';
 import { View, SectionList, Text } from 'react-native';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { fetchItems } from '../../actions/monthActions';
 import MonthlyItemList from './MonthlyItemList';
 import { Container } from '../../components/Container';
+import MonthItem from '../../models/MonthItem';
 
-export default class MonthScreen extends Component {
+export class MonthScreen extends Component {
     static navigationOptions = ({navigation}) => {
         const {params} = navigation.state;
-        if (params != null) {
-            return {
-                title: 'Monthly Spending'
-            }
+        return {
+            title: 'Monthly Spending'
         }
     }
 
@@ -18,8 +20,37 @@ export default class MonthScreen extends Component {
         return (
             <Container>
                 <MonthlyItemList
+                    monthItems={this.props.monthItems}
+                    refreshMonthItems={this.props.refreshMonthItems}
+                    isFetching={this.props.api.isFetching}
                 />
             </Container>
         );
     }
 }
+
+MonthScreen.propTypes = {
+    monthItems: PropTypes.arrayOf(
+        PropTypes.instanceOf(MonthItem).isRequired
+    ).isRequired,
+    api: PropTypes.shape({
+        isFetching: PropTypes.bool.isRequired
+    })
+}
+
+const mapStateToProps = (state, ownProps) => {
+    return state.month;
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        refreshMonthItems: (date) => {
+            dispatch(fetchItems(date));
+        }
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MonthScreen);

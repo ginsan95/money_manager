@@ -2,55 +2,36 @@ import React, { Component } from 'react';
 import { View, Text, SectionList, Button, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types'
 import DayItemCell from './DayItemCell';
+import MonthlyItemHeader from './MonthlyItemHeader';
 import { connect } from 'react-redux';
 import Item from '../../models/Item';
-
-const haha = [
-    {month: 'January', data: [
-        {date: new Date(), totalPrice: 100, items:[
-            {name: 'a', date: new Date(), price: 20},
-            {name: 'a', date: new Date(), price: 20},
-            {name: 'a', date: new Date(), price: 20}
-        ]},
-        {date: new Date(), totalPrice: 100, items:[
-            {name: 'a', date: new Date(), price: 20},
-            {name: 'a', date: new Date(), price: 20},
-            {name: 'a', date: new Date(), price: 20}
-        ]}
-    ]},
-    {month: 'February', data: [
-        {date: new Date(), totalPrice: 100, items:[
-            {name: 'a', date: new Date(), price: 20},
-            {name: 'a', date: new Date(), price: 20},
-            {name: 'a', date: new Date(), price: 20}
-        ]},
-        {date: new Date(), totalPrice: 100, items:[
-            {name: 'a', date: new Date(), price: 20},
-            {name: 'a', date: new Date(), price: 20},
-            {name: 'a', date: new Date(), price: 20}
-        ]}
-    ]}
-]
+import MonthItem from '../../models/MonthItem';
 
 export default class MonthlyItemList extends Component {
-    sortItems() {
-        return this.props.items.sort((item1, item2) => {
-            return item1.date.getTime() > item2.date.getTime();
-        });
+    componentDidMount() {
+        this.refreshMonthItems();
+    }
+
+    refreshMonthItems = () => {
+        const today = new Date();
+        const date = new Date("01/01/" + today.getFullYear());
+        this.props.refreshMonthItems(date);
     }
 
     render() {
         return (
             <SectionList
-                sections={haha}
+                sections={this.props.monthItems}
                 renderItem={({item}) =>
                      <DayItemCell dayItem={item}/>
                 }
                 renderSectionHeader={({section}) => 
-                    <Text>{section.month}</Text>
+                    <MonthlyItemHeader monthItem={section}/>
                 }
                 keyExtractor={(item, index) => index}
                 stickySectionHeadersEnabled={true}
+                onRefresh={this.refreshMonthItems}
+                refreshing={this.props.isFetching}
                 style={styles.container}
             />
         );
@@ -64,3 +45,10 @@ const styles = StyleSheet.create({
     }
 });
 
+MonthlyItemList.propTypes = {
+    monthItems: PropTypes.arrayOf(
+        PropTypes.instanceOf(MonthItem).isRequired
+    ).isRequired,
+    isFetching: PropTypes.bool.isRequired,
+    refreshMonthItems: PropTypes.func.isRequired
+}

@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableWithoutFeedback, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
-import DayItem from '../../models/DayItem';
 
-export default class DayItemCell extends Component {
-    handleClick = () => {
-        
+export default class MonthlyItemHeader extends Component {
+    handleClick() {
+
     }
 
     render() {
-        const { dayItem } = this.props;
+        const {monthItem} = this.props;
 
         return (
-            <View style={styles.container}>
-                <TouchableWithoutFeedback onPress={this.handleClick} >
-                    <View style={styles.detail}>
-                        <Text style={styles.name}>{dayItem.date.toMyDateString()}</Text>
+            <View>
+                <TouchableWithoutFeedback onPress={this.handleClick}>
+                    <View style={[styles.container, styles.detail]}>
+                        <View style={styles.sub_detail}>
+                            <Text style={styles.bold_text}>⇩</Text>
+                            <Text style={styles.bold_text}>{monthItem.month}</Text>
+                        </View>
                         <View style={styles.price}>
                             <Text>$</Text>
-                            <Text style={styles.priceBox}>{dayItem.totalPrice.toFixed(2)}</Text>
+                            <Text style={styles.priceBox}>{monthItem.totalPrice.toFixed(2)}</Text>
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
@@ -32,15 +33,19 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         padding: 4,
         paddingBottom: 6,
-        paddingTop: 8,
+        paddingTop: 12,
+        backgroundColor: '#f1f1f1'
     },
     detail: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    name: {
-        flex: -1
+    sub_detail: {
+        flexDirection: 'row'
+    },
+    bold_text: {
+        fontWeight: 'bold'
     },
     price: {
         flexDirection: 'row',
@@ -54,7 +59,3 @@ const styles = StyleSheet.create({
         marginLeft: 4
     }
 });
-
-DayItemCell.propTypes = {
-    dayItem: PropTypes.instanceOf(DayItem).isRequired
-}

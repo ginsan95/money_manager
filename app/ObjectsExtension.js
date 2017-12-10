@@ -1,3 +1,14 @@
 Date.prototype.toMyTimeString = function() {
-    return this.toLocaleString('en-US', {hour: 'numeric',minute:'numeric', hour12: true});
+    return this.toLocaleString('en-MY', {hour: 'numeric', minute:'numeric', hour12: true});
+}
+Date.prototype.toMyDateString = function() {
+    return this.toLocaleString('en-MY', {weekday: 'long', day:'numeric', month:'numeric', year:'numeric'});
+}
+Date.prototype.toMonthString = function() {
+    return this.toLocaleString('en-MY', {month: 'long'});
+}
+Date.prototype.sameDayAs = function(date) {
+    return this.getDay() === date.getDay()
+        && this.getMonth() === date.getMonth()
+        && this.getFullYear() === date.getFullYear();
 }
