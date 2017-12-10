@@ -12,3 +12,4 @@ Date.prototype.sameDayAs = function(date) {
         && this.getMonth() === date.getMonth()
         && this.getFullYear() === date.getFullYear();
 }
+Date.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

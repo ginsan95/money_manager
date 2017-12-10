@@ -12,16 +12,16 @@ export default class DayItemCell extends Component {
         const { dayItem } = this.props;
 
         return (
-            <View style={styles.container}>
-                <TouchableWithoutFeedback onPress={this.handleClick} >
-                    <View style={styles.detail}>
+            <View>
+                {this.props.isExpended && <TouchableWithoutFeedback onPress={this.handleClick} >
+                    <View style={[styles.container, styles.detail]}>
                         <Text style={styles.name}>{dayItem.date.toMyDateString()}</Text>
                         <View style={styles.price}>
                             <Text>$</Text>
                             <Text style={styles.priceBox}>{dayItem.totalPrice.toFixed(2)}</Text>
                         </View>
                     </View>
-                </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>}
             </View>
         );
     }
@@ -56,5 +56,6 @@ const styles = StyleSheet.create({
 });
 
 DayItemCell.propTypes = {
-    dayItem: PropTypes.instanceOf(DayItem).isRequired
+    dayItem: PropTypes.instanceOf(DayItem).isRequired,
+    isExpended: PropTypes.bool.isRequired
 }

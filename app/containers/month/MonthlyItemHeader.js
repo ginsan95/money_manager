@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+import MonthItem from '../../models/MonthItem';
 
 export default class MonthlyItemHeader extends Component {
-    handleClick() {
-
+    handleClick = () => {
+        this.props.handleClick(this.props.monthItem);
     }
 
     render() {
@@ -14,7 +15,7 @@ export default class MonthlyItemHeader extends Component {
                 <TouchableWithoutFeedback onPress={this.handleClick}>
                     <View style={[styles.container, styles.detail]}>
                         <View style={styles.sub_detail}>
-                            <Text style={styles.bold_text}>⇩</Text>
+                            <Text style={styles.bold_text}>{monthItem.isExpended ?  '△' : '▽'}</Text>
                             <Text style={styles.bold_text}>{monthItem.month}</Text>
                         </View>
                         <View style={styles.price}>

@@ -22,11 +22,12 @@ export default class MonthlyItemList extends Component {
         return (
             <SectionList
                 sections={this.props.monthItems}
-                renderItem={({item}) =>
-                     <DayItemCell dayItem={item}/>
+                renderItem={({item, section}) =>
+                     <DayItemCell dayItem={item} isExpended={section.isExpended}/>
                 }
                 renderSectionHeader={({section}) => 
-                    <MonthlyItemHeader monthItem={section}/>
+                    <MonthlyItemHeader monthItem={section}
+                        handleClick={this.props.handleHeaderClick}/>
                 }
                 keyExtractor={(item, index) => index}
                 stickySectionHeadersEnabled={true}
@@ -50,5 +51,6 @@ MonthlyItemList.propTypes = {
         PropTypes.instanceOf(MonthItem).isRequired
     ).isRequired,
     isFetching: PropTypes.bool.isRequired,
-    refreshMonthItems: PropTypes.func.isRequired
+    refreshMonthItems: PropTypes.func.isRequired,
+    handleHeaderClick: PropTypes.func.isRequired
 }

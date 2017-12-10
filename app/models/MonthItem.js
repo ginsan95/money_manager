@@ -1,7 +1,8 @@
-export default class MonthItemMonthItem {
-    constructor(dayItems, month) {
+export default class MonthItem {
+    constructor(dayItems, month, isExpended = true) {
         this.dayItems = dayItems;
         this.data = dayItems;
+        this.isExpended = isExpended;
 
         if (!month) {
             if (dayItems.length > 0) {
@@ -18,5 +19,14 @@ export default class MonthItemMonthItem {
             totalPrice += dayItems[0].totalPrice;
         }
         this.totalPrice = totalPrice;
+    }
+
+    toggleExpend() {
+        return new MonthItem(this.dayItems, this.month, !this.isExpended);
+    }
+
+    getMonthIndex() {
+        let date = new Date('01 ' + this.month + ' 2000');
+        return date.getMonth();
     }
 }

@@ -1,4 +1,4 @@
-import { FETCH_MONTH_ITEMS } from './actionTypes';
+import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND } from './actionTypes';
 import { getItems } from '../api/API';
 import Item from '../models/Item';
 import DayItem from '../models/DayItem';
@@ -35,12 +35,15 @@ export function fetchItems(date) {
 
 function convertToMonthItems(json) {
     let map = new Map();
+    for (let i=0; i<Date.months.length; i++) {
+        if (!map.has(Date.months[i])) {
+            map.set(Date.months[i], []);
+        }
+    }
+
     for(let i=0; i<json.length; i++) {
         let item = Item.fromJson(json[i]);
         let month = item.date.toMonthString();
-        if (!map.has(month)) {
-            map.set(month, []);
-        }
         map.get(month).push(item);
     }
 
@@ -68,4 +71,12 @@ function convertDayItems(items) {
         dayItems.push(new DayItem(array));
     }
     return dayItems;
+}
+// endregion
+
+export function toggleExpend(monthItem) {
+    return {
+        type: TOGGLE_MONTH_EXPEND,
+        monthItem: monthItem.toggleExpend()
+    }
 }
