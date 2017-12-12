@@ -7,10 +7,10 @@ const headers = {
     'Content-Type': 'application/json' 
 }
 
-export async function getItems(date) {
+export async function getItems(startDate, endDate) {
     let query = '';
-    if (date) {
-        query = '?where=buy_date%3E%3D' + date.getTime();
+    if (startDate && endDate) {
+        query = '?where=buy_date%3E%3D' + startDate.getTime() + '%20AND%20buy_date%3C%3D' + endDate.getTime();
     }
     const response = await fetch(API_URL + API_ITEMS + query);
     const json = await response.json();

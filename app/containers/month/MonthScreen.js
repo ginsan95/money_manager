@@ -1,12 +1,13 @@
 import { StackNavigator } from 'react-navigation';
 import React, { Component } from 'react';
-import { View, SectionList, Text } from 'react-native';
+import { View, Button, Picker } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchItems, toggleExpend } from '../../actions/monthActions';
+import { fetchItems, toggleExpend, changeYear } from '../../actions/monthActions';
 import MonthlyItemList from './MonthlyItemList';
 import { Container } from '../../components/Container';
 import MonthItem from '../../models/MonthItem';
+import SelectedYearHeader from './SelectedYearHeader';
 
 export class MonthScreen extends Component {
     static navigationOptions = ({navigation}) => {
@@ -19,11 +20,16 @@ export class MonthScreen extends Component {
     render() {
         return (
             <Container>
+                <SelectedYearHeader 
+                    year={this.props.year}
+                    handleChangeYear={this.props.handleChangeYear}
+                    refreshMonthItems={this.props.refreshMonthItems} />
                 <MonthlyItemList
                     monthItems={this.props.monthItems}
                     refreshMonthItems={this.props.refreshMonthItems}
                     isFetching={this.props.api.isFetching}
                     handleHeaderClick={this.props.handleHeaderClick}
+                    year={this.props.year}
                 />
             </Container>
         );
@@ -36,7 +42,8 @@ MonthScreen.propTypes = {
     ).isRequired,
     api: PropTypes.shape({
         isFetching: PropTypes.bool.isRequired
-    })
+    }),
+    year: PropTypes.string.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -45,11 +52,14 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        refreshMonthItems: (date) => {
-            dispatch(fetchItems(date));
+        refreshMonthItems: (year) => {           
+            dispatch(fetchItems(year));
         },
         handleHeaderClick: (monthItem) => {
             dispatch(toggleExpend(monthItem));
+        },
+        handleChangeYear: (year) => {
+            dispatch(changeYear(year));
         }
     }
 }

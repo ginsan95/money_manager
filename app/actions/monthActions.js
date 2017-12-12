@@ -1,4 +1,4 @@
-import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND } from './actionTypes';
+import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND, CHANGE_YEAR } from './actionTypes';
 import { getItems } from '../api/API';
 import Item from '../models/Item';
 import DayItem from '../models/DayItem';
@@ -21,11 +21,13 @@ export function receiveItems(monthItems, error = null) {
     }
 }
 
-export function fetchItems(date) {
+export function fetchItems(year) {
     return async dispatch => {
         dispatch(requestItems());
         try {
-            const json = await getItems(date);
+            const startDate = new Date("01/01/" + year);
+            const endDate = new Date("12/31/" + year);
+            const json = await getItems(startDate, endDate);
             dispatch(receiveItems(convertToMonthItems(json)));
         } catch (e) {
             dispatch(receiveItems([], e));
@@ -78,5 +80,12 @@ export function toggleExpend(monthItem) {
     return {
         type: TOGGLE_MONTH_EXPEND,
         monthItem: monthItem.toggleExpend()
+    }
+}
+
+export function changeYear(year) {
+    return {
+        type: CHANGE_YEAR,
+        year
     }
 }

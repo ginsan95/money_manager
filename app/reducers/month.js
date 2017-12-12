@@ -1,4 +1,4 @@
-import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND } from 'actions/actionTypes';
+import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND, CHANGE_YEAR } from 'actions/actionTypes';
 import { combineReducers } from 'redux'
 import MonthItem from '../models/MonthItem';
 
@@ -50,7 +50,17 @@ function api(state = apiState, action) {
     }
 }
 
+function year(state = new Date().getFullYear().toString(), action) {
+    switch(action.type) {
+        case CHANGE_YEAR:
+            return action.year;
+        default:
+            return state;
+    }
+}
+
 export default month = combineReducers ({
     monthItems,
+    year,
     api
 });

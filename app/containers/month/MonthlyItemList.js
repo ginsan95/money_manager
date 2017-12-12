@@ -13,9 +13,7 @@ export default class MonthlyItemList extends Component {
     }
 
     refreshMonthItems = () => {
-        const today = new Date();
-        const date = new Date("01/01/" + today.getFullYear());
-        this.props.refreshMonthItems(date);
+        this.props.refreshMonthItems(this.props.year);
     }
 
     render() {
@@ -52,5 +50,6 @@ MonthlyItemList.propTypes = {
     ).isRequired,
     isFetching: PropTypes.bool.isRequired,
     refreshMonthItems: PropTypes.func.isRequired,
-    handleHeaderClick: PropTypes.func.isRequired
+    handleHeaderClick: PropTypes.func.isRequired,
+    year: PropTypes.string.isRequired    
 }
