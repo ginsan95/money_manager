@@ -77,7 +77,7 @@ class TodayScreen extends Component {
                     handleLongSelectItem={this.props.handleLongSelectItem}
                     isEditing={this.props.api.isEditing}
                 />
-                <Text>Total: ${this.calculateTotal()}</Text>
+                <Text>Total: ${this.calculateTotal().toFixed(2)}</Text>
                 <ProgressDialog 
                     visible={this.props.api.isProcessing} 
                     message="Processing..."

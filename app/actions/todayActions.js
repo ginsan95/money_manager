@@ -23,7 +23,10 @@ export function fetchItems() {
     return async dispatch => {
         dispatch(requestItems());
         try {
-            const json = await getItems();
+            const today = new Date();
+            const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
+            const endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
+            const json = await getItems(startDate, endDate);
             dispatch(receiveItems(convertItems(json)));
         } catch (e) {
             dispatch(receiveItems([], e));

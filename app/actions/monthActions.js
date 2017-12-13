@@ -25,8 +25,8 @@ export function fetchItems(year) {
     return async dispatch => {
         dispatch(requestItems());
         try {
-            const startDate = new Date("01/01/" + year);
-            const endDate = new Date("12/31/" + year);
+            const startDate = new Date(year, 1, 1, 0, 0, 0, 0);
+            const endDate = new Date(year, 12, 31, 23, 59, 59, 999);
             const json = await getItems(startDate, endDate);
             dispatch(receiveItems(convertToMonthItems(json)));
         } catch (e) {
