@@ -21,7 +21,10 @@ export default class MonthlyItemList extends Component {
             <SectionList
                 sections={this.props.monthItems}
                 renderItem={({item, section}) =>
-                     <DayItemCell dayItem={item} isExpended={section.isExpended}/>
+                     <DayItemCell 
+                        dayItem={item} 
+                        isExpended={section.isExpended}
+                        handleClick={this.props.handleItemClick}/>
                 }
                 renderSectionHeader={({section}) => 
                     <MonthlyItemHeader monthItem={section}

@@ -13,25 +13,29 @@ class TodayScreen extends Component {
     static navigationOptions = ({navigation}) => {
         const {params} = navigation.state;
         if (params != null) {
-            return {
-                title: 'Today\'s Spending',
-                headerRight: (
+            let options = {
+                title: 'Today\'s Spending'
+            }
+            if (params.handleAddItem || params.handleDismissEditing) {
+                options.headerRight = (
                     <View>
-                        {!params.isEditing && <AddItemButton handleAddItem={params.handleAddItem} />}
+                        {!params.isEditing && <AddItemButton date={params.date} handleAddItem={params.handleAddItem} />}
                         {params.isEditing && <Button title='Cancel' onPress={params.handleDismissEditing}/>}
-                    </View>
-                ),
-                headerLeft: (
-                    <View>
-                        {params.isEditing && <Button title='Delete' onPress={params.handleDeleteItems}/>}
                     </View>
                 )
             }
+            if (params.isEditing) {
+                options.headerLeft = (
+                    <Button title='Delete' onPress={params.handleDeleteItems}/>
+                );
+            }
+            return options;
         }
     }
 
     componentWillMount() {
         this.props.navigation.setParams({
+            date: this.props.date,
             handleAddItem: this.props.handleAddItem,
             isEditing: this.props.api.isEditing,
             handleDismissEditing: this.props.handleDismissEditing,
@@ -64,11 +68,9 @@ class TodayScreen extends Component {
     }
 
     render() {
-        const date = new Date();
-        
         return (
             <Container>
-                <Text>Date: {date.toDateString()}</Text>
+                <Text>Date: {this.props.date.toMyDateString()}</Text>
                 <ItemList 
                     items={this.props.items} 
                     handleItemClick={this.props.handleItemClick} 
@@ -96,12 +98,20 @@ TodayScreen.propTypes = {
         isProcessing: PropTypes.bool.isRequired,
         isEditing: PropTypes.bool.isRequired
     }),
+    date: PropTypes.instanceOf(Date),
     handleAddItem: PropTypes.func.isRequired,
     handleDeleteItems: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {
-    return state.today;
+    let myProps = state.today;
+    if (ownProps.navigation && ownProps.navigation.state.params
+        && ownProps.navigation.state.params.items 
+        && ownProps.navigation.state.params.items.length > 0) {
+        myProps.items = ownProps.navigation.state.params.items;
+        myProps.date = myProps.items[0].date;
+    }
+    return myProps;
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {

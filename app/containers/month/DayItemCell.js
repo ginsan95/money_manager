@@ -5,7 +5,7 @@ import DayItem from '../../models/DayItem';
 
 export default class DayItemCell extends Component {
     handleClick = () => {
-        
+        this.props.handleClick(this.props.dayItem.items);
     }
 
     render() {

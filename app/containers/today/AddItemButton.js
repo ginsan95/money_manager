@@ -122,6 +122,7 @@ export default class AddItemButton extends Component {
                             isVisible={this.state.datePickerVisible}
                             onConfirm={this.handleSelectDate}
                             onCancel={this.handleDismissDatePicker}
+                            date={this.props.date}
                             mode='time'/>
                         <Button title="Add" onPress={this.handleAddItem}/>
                     </View>
@@ -142,5 +143,6 @@ const styles = StyleSheet.create({
 });
 
 AddItemButton.propTypes = {
+    date: PropTypes.instanceOf(Date),
     handleAddItem: PropTypes.func.isRequired
 }

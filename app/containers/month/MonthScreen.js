@@ -17,6 +17,14 @@ export class MonthScreen extends Component {
         }
     }
 
+    gotoDayScreen = (items) => {
+        this.props.navigation.navigate(
+            'Day', {
+                items
+            }
+        )
+    }
+
     render() {
         return (
             <Container>
@@ -29,6 +37,7 @@ export class MonthScreen extends Component {
                     refreshMonthItems={this.props.refreshMonthItems}
                     isFetching={this.props.api.isFetching}
                     handleHeaderClick={this.props.handleHeaderClick}
+                    handleItemClick={this.gotoDayScreen}
                     year={this.props.year}
                 />
             </Container>

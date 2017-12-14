@@ -2,7 +2,7 @@ import { StackNavigator } from 'react-navigation';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
-export class FilterScreen extends Component {
+export default class FilterScreen extends Component {
     render() {
         return (
             <View/>

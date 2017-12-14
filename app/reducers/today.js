@@ -72,8 +72,13 @@ function api(state = apiState, action) {
     }
 }
 
+function date(state = new Date(), action) {
+    return state;
+}
+
 const today = combineReducers ({
     items,
-    api
+    api,
+    date
 });
 export default today;

@@ -13,7 +13,9 @@ export default class ItemList extends Component {
     }
 
     componentDidMount() {
-        this.props.refreshItems();
+        if (this.props.items.length == 0) {
+            this.props.refreshItems();
+        }
     }
 
     render() {
