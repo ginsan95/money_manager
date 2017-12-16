@@ -12,8 +12,9 @@ export async function getItems(startDate, endDate) {
     if (startDate && endDate) {
         query = '?where=buy_date%3E%3D' + startDate.getTime() + '%20AND%20buy_date%3C%3D' + endDate.getTime();
     }
-    const sort = "&sortBy=buy_date";
-    const response = await fetch(API_URL + API_ITEMS + query + sort);
+    const sortBy = "&sortBy=buy_date";
+    const pageSize = "&pageSize=100";
+    const response = await fetch(API_URL + API_ITEMS + query + sortBy + pageSize);
     const json = await response.json();
     return json;
 }

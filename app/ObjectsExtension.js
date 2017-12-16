@@ -7,8 +7,8 @@ Date.prototype.toMyDateString = function() {
 Date.prototype.toMonthString = function() {
     return this.toLocaleString('en-MY', {month: 'long'});
 }
-Date.prototype.sameDayAs = function(date) {
-    return this.getDay() === date.getDay()
+Date.prototype.sameDateAs = function(date) {
+    return this.getDate() === date.getDate()
         && this.getMonth() === date.getMonth()
         && this.getFullYear() === date.getFullYear();
 }

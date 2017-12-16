@@ -63,7 +63,7 @@ function convertDayItems(items) {
         let array = [items[0]];
         for(let i=1; i<items.length; i++) {
             let item = items[i];
-            if (array[0].date.sameDayAs(item.date)) {
+            if (array[0].date.sameDateAs(item.date)) {
                 array.push(item);
             } else {
                 dayItems.push(new DayItem(array));
