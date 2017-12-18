@@ -1,35 +1,34 @@
-import { ADD_ITEM, DELETE_ITEM, FETCH_ITEMS, LONG_SELECT_ITEM, DISMISS_EDITING } from './actionTypes';
+import { ADD_ITEM, DELETE_ITEM, FETCH_ITEMS, LONG_SELECT_ITEM, DISMISS_EDITING, SET_ITEMS } from './actionTypes';
 import { getItems, postItem, deleteItem as apiDeleteItem } from '../api/API';
 import Item from '../models/Item';
 
 // region Fetch Items
-export function requestItems() {
+export function requestItems(namespace) {
     return {
-        type: FETCH_ITEMS,
+        type: typeFrom(namespace, FETCH_ITEMS),
         isFetching: true
     }
 }
 
-export function receiveItems(items, error = null) {
+export function receiveItems(namespace, items, error = null) {
     return {
-        type: FETCH_ITEMS,
+        type: typeFrom(namespace, FETCH_ITEMS),
         isFetching: false,
         items,
         error
     }
 }
 
-export function fetchItems() {
+export function fetchItems(namespace, date) {
     return async dispatch => {
-        dispatch(requestItems());
+        dispatch(requestItems(namespace));
         try {
-            const today = new Date();
-            const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
-            const endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
+            const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+            const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999);
             const json = await getItems(startDate, endDate);
-            dispatch(receiveItems(convertItems(json)));
+            dispatch(receiveItems(namespace, convertItems(json)));
         } catch (e) {
-            dispatch(receiveItems([], e));
+            dispatch(receiveItems(namespace, [], e));
         }
     }
 }
@@ -44,68 +43,79 @@ function convertItems(json) {
 // endregion
 
 // region Add Item
-export function addItemAction(isProcessing, item = null, error = null) {
+export function addItemAction(namespace, isProcessing, item = null, error = null) {
     return {
-        type: ADD_ITEM,
+        type: typeFrom(namespace, ADD_ITEM),
         isProcessing,
         item,
         error
     }
 }
 
-export function addItem(item) {
+export function addItem(namespace, item) {
     return async dispatch => {
-        dispatch(addItemAction(true));
+        dispatch(addItemAction(namespace, true));
         try {
             const json = await postItem(item);
             if (json.objectId) {
-                dispatch(addItemAction(false, item.update(json.objectId)));
+                dispatch(addItemAction(namespace, false, item.update(json.objectId)));
             } else {
-                dispatch(addItemAction(false, null, json));
+                dispatch(addItemAction(namespace, false, null, json));
             }
         } catch (e) {
-            dispatch(addItemAction(false, null, e));
+            dispatch(addItemAction(namespace, false, null, e));
         }
     }
 }
 // endregion
 
 // region Delete Item
-export function deleteItemsAction(isProcessing, ids = [], error = null) {
+export function deleteItemsAction(namespace, isProcessing, ids = [], error = null) {
     return {
-        type: DELETE_ITEM,
+        type: typeFrom(namespace, DELETE_ITEM),
         ids,
         isProcessing,
         error
     }
 }
 
-export function deleteItems(ids) {
+export function deleteItems(namespace, ids) {
     return async dispatch => {
-        dispatch(deleteItemsAction(true));
+        dispatch(deleteItemsAction(namespace, true));
         try {
             const fetches = ids.map(id => {
                 return apiDeleteItem(id);
             });
             const json = await Promise.all(fetches);
-            dispatch(deleteItemsAction(false, ids));
+            dispatch(deleteItemsAction(namespace, false, ids));
         } catch (e) {
-            dispatch(deleteItemsAction(false, [], e));
+            dispatch(deleteItemsAction(namespace, false, [], e));
         }
     }
 }
 // endregion
 
-export function longSelectItem(id) {
+export function longSelectItem(namespace, id) {
     return {
-        type: LONG_SELECT_ITEM,
+        type: typeFrom(namespace, LONG_SELECT_ITEM),
         id,
         isEditing: true
     }
 }
 
-export function dismissEditing() {
+export function dismissEditing(namespace) {
     return {
-        type: DISMISS_EDITING
+        type: typeFrom(namespace, DISMISS_EDITING)
     }
+}
+
+export function setItems(namespace, items) {
+    return {
+        type: typeFrom(namespace, SET_ITEMS),
+        items
+    }
+}
+
+function typeFrom(namespace, type) {
+    return `${namespace}/${type}`;
 }

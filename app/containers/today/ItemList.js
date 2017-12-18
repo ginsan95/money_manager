@@ -6,16 +6,20 @@ import { connect } from 'react-redux';
 import Item from '../../models/Item';
 
 export default class ItemList extends Component {
-    sortItems() {
+    componentDidMount() {
+        if (this.props.items.length == 0) {
+            this.handleRefreshItems();
+        }
+    }
+
+    handleRefreshItems = () => {
+        this.props.refreshItems(this.props.date);
+    }
+
+    sortItems = () => {
         return this.props.items.sort((item1, item2) => {
             return item1.date.getTime() > item2.date.getTime();
         });
-    }
-
-    componentDidMount() {
-        if (this.props.items.length == 0) {
-            this.props.refreshItems();
-        }
     }
 
     render() {
@@ -30,7 +34,7 @@ export default class ItemList extends Component {
                     />
                 }
                 keyExtractor={(item, index) => index}
-                onRefresh={this.props.refreshItems}
+                onRefresh={this.handleRefreshItems}
                 refreshing={this.props.isFetching}
                 style={styles.container}
             />

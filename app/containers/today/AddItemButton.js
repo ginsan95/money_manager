@@ -15,7 +15,7 @@ export default class AddItemButton extends Component {
     initialState = {
         name: '',
         price: '',
-        date: new Date(),
+        date: this.props.date,
         namePlaceholder: NAME_PLACEHOLDER,
         pricePlaceHolder: PRICE_PLACEHOLDER,
         datePickerVisible: false

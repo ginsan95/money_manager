@@ -3,7 +3,7 @@ import { View, Text, Button } from 'react-native';
 import { Container } from 'components/Container';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addItem, deleteItems, fetchItems, longSelectItem, dismissEditing } from 'actions/todayActions';
+import { addItem, deleteItems, fetchItems, longSelectItem, dismissEditing, setItems } from '../../actions/todayActions';
 import ItemList from './ItemList';
 import AddItemButton from './AddItemButton';
 import { ProgressDialog } from 'react-native-simple-dialogs';
@@ -34,8 +34,12 @@ class TodayScreen extends Component {
     }
 
     componentWillMount() {
+        if (this.props.navigation.state.params && this.props.navigation.state.params.items) {
+            this.props.setItems(this.props.navigation.state.params.items);
+        }
+
         this.props.navigation.setParams({
-            date: this.props.date,
+            date: this.getDate(),
             handleAddItem: this.props.handleAddItem,
             isEditing: this.props.api.isEditing,
             handleDismissEditing: this.props.handleDismissEditing,
@@ -67,14 +71,27 @@ class TodayScreen extends Component {
         return total;
     }
 
+    getDate = () => {
+        if (this.props.navigation.state.params 
+            && this.props.navigation.state.params.items
+            && this.props.navigation.state.params.items.length > 0) {
+            return this.props.navigation.state.params.items[0].date;
+        } else if (this.props.screenProps && this.props.screenProps.date) {
+            return this.props.screenProps.date;
+        } else {
+            return new Date();
+        }
+    }
+
     render() {
         return (
             <Container>
-                <Text>Date: {this.props.date.toMyDateString()}</Text>
+                <Text>Date: {this.getDate().toMyDateString()}</Text>
                 <ItemList 
                     items={this.props.items} 
                     handleItemClick={this.props.handleItemClick} 
                     refreshItems={this.props.refreshItems}
+                    date={this.getDate()}
                     isFetching={this.props.api.isFetching}
                     handleLongSelectItem={this.props.handleLongSelectItem}
                     isEditing={this.props.api.isEditing}
@@ -98,41 +115,45 @@ TodayScreen.propTypes = {
         isProcessing: PropTypes.bool.isRequired,
         isEditing: PropTypes.bool.isRequired
     }),
-    date: PropTypes.instanceOf(Date),
     handleAddItem: PropTypes.func.isRequired,
     handleDeleteItems: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state, ownProps) => {
-    let myProps = state.today;
-    if (ownProps.navigation && ownProps.navigation.state.params
-        && ownProps.navigation.state.params.items 
-        && ownProps.navigation.state.params.items.length > 0) {
-        myProps.items = ownProps.navigation.state.params.items;
-        myProps.date = myProps.items[0].date;
+function getNamespace(props) {
+    if (props.navigation.state.params 
+        && props.navigation.state.params.namespace) {
+        return props.navigation.state.params.namespace;
+    } else if (props.screenProps && props.screenProps.namespace) {
+        return props.screenProps.namespace;
+    } else {
+        return 'today';
     }
-    return myProps;
+}
+
+const mapStateToProps = (state, ownProps) => {
+    return state.today[getNamespace(ownProps)];
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
+    const namespace = getNamespace(ownProps);
     return {
         handleAddItem: (item) => {
-            dispatch(addItem(item))
+            dispatch(addItem(namespace, item))
         },
-        deleteItems: (ids) => {
-            dispatch(deleteItems(ids));
-        },
-        refreshItems: () => {
-            dispatch(fetchItems());
+        refreshItems: (date) => {
+            dispatch(fetchItems(namespace, date));
         },
         handleLongSelectItem: (id) => {
-            dispatch(longSelectItem(id));
+            dispatch(longSelectItem(namespace, id));
         },
         handleDismissEditing: () => {
-            dispatch(dismissEditing());
+            dispatch(dismissEditing(namespace));
         },
         handleDeleteItems: (ids) => {
-            dispatch(deleteItems(ids));
+            dispatch(deleteItems(namespace, ids));
+        },
+        setItems: (items) => {
+            dispatch(setItems(namespace, items));
         }
     }
 }

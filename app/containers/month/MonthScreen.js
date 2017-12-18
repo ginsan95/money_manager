@@ -20,7 +20,9 @@ export class MonthScreen extends Component {
     gotoDayScreen = (items) => {
         this.props.navigation.navigate(
             'Day', {
-                items
+                items,
+                namespace: 'month',
+                isFirstTime: true
             }
         )
     }

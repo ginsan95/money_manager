@@ -3,7 +3,7 @@ export const DELETE_ITEM = 'DELETE_ITEM';
 export const FETCH_ITEMS = 'FETCH_ITEMS';
 export const LONG_SELECT_ITEM = "LONG_SELECT_ITEM";
 export const DISMISS_EDITING = "DISMISS_EDITING";
-
+export const SET_ITEMS = 'SET_ITEMS';
 
 export const FETCH_MONTH_ITEMS = 'FETCH_MONTH_ITEMS';
 export const TOGGLE_MONTH_EXPEND = "TOGGLE_MONTH_EXPEND";

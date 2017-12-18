@@ -1,4 +1,4 @@
-import { ADD_ITEM, DELETE_ITEM, FETCH_ITEMS, LONG_SELECT_ITEM, DISMISS_EDITING } from 'actions/actionTypes';
+import { ADD_ITEM, DELETE_ITEM, FETCH_ITEMS, LONG_SELECT_ITEM, DISMISS_EDITING, SET_ITEMS } from 'actions/actionTypes';
 import { combineReducers } from 'redux'
 
 const apiState = {
@@ -7,62 +7,64 @@ const apiState = {
     isEditing: false
 }
 
-function items(state = [], action) {
+const items = (namespace) => (state = [], action) => {
     switch (action.type) {
-        case ADD_ITEM:
+        case typeFrom(namespace, ADD_ITEM):
             const myItem = action.item;
             return myItem ? [...state, myItem] : state;
-        case DELETE_ITEM:
+        case typeFrom(namespace, DELETE_ITEM):
             return state.filter(item => {
                 return !action.ids.includes(item.id);
             });
-        case FETCH_ITEMS:
+        case typeFrom(namespace, FETCH_ITEMS):
             return !action.isFetching ? action.items : state;
-        case LONG_SELECT_ITEM:
+        case typeFrom(namespace, LONG_SELECT_ITEM):
             return state.map(item => {
                 if (item.id === action.id) {
                     item.isSelected = !item.isSelected;
                 }
                 return item;
             });
-        case DISMISS_EDITING:
+        case typeFrom(namespace, DISMISS_EDITING):
             return state.map(item => {
                 item.isSelected = false;
                 return item;
             });
+        case typeFrom(namespace, SET_ITEMS):
+            return action.items;
         default:
             return state;
     }
 }
 
-function api(state = apiState, action) {
+const api = (namespace) => (state = apiState, action) => {
     if (action.error) {
         console.log(action.error);
     }
 
     switch (action.type) {
-        case FETCH_ITEMS:
+        case typeFrom(namespace, FETCH_ITEMS):
             return {
                 ...state,
                 isFetching: action.isFetching
             }
-        case ADD_ITEM:
+        case typeFrom(namespace, ADD_ITEM):
             return {
                 ...state,
                 isProcessing: action.isProcessing
             }
-        case DELETE_ITEM:
+        case typeFrom(namespace, DELETE_ITEM):
             return {
                 ...state,
                 isProcessing: action.isProcessing,
                 isEditing: false
             }
-        case LONG_SELECT_ITEM:
+        case typeFrom(namespace, LONG_SELECT_ITEM):
             return {
                 ...state,
                 isEditing: action.isEditing
             }
-        case DISMISS_EDITING:
+        case typeFrom(namespace, DISMISS_EDITING):
             return {
                 ...state,
                 isEditing: false
@@ -72,13 +74,15 @@ function api(state = apiState, action) {
     }
 }
 
-function date(state = new Date(), action) {
-    return state;
-}
-
-const today = combineReducers ({
-    items,
-    api,
-    date
+const todayReducer = (namespace) => combineReducers ({
+    items: items(namespace),
+    api: api(namespace)
 });
-export default today;
+export default combineReducers ({
+    today: todayReducer('today'),
+    month: todayReducer('month')
+});
+
+function typeFrom(namespace, type) {
+    return `${namespace}/${type}`;
+}
