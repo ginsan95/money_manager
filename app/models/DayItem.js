@@ -14,4 +14,9 @@ export default class DayItem {
         }
         this.totalPrice = totalPrice;
     }
+
+    addItem(item) {
+        this.items.push(item);
+        this.totalPrice += item.price;
+    }
 }

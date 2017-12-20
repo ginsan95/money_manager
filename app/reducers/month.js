@@ -1,6 +1,7 @@
-import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND, CHANGE_YEAR } from 'actions/actionTypes';
+import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND, CHANGE_YEAR, ADD_ITEM } from 'actions/actionTypes';
 import { combineReducers } from 'redux'
 import MonthItem from '../models/MonthItem';
+import DayItem from '../models/DayItem';
 
 const defaultMonthItems = [
     new MonthItem([], 'January'),
@@ -29,9 +30,23 @@ function monthItems(state = defaultMonthItems, action) {
             let monthItems = [...state];
             monthItems[action.monthItem.getMonthIndex()] = action.monthItem;
             return monthItems;
+        case `month/${ADD_ITEM}`:
+            return addItem(state, action);
         default:
             return state;
     }
+}
+
+// for month/ADD_ITEM
+function addItem(monthItems, action) {
+    const { item } = action;
+    if (item && monthItems && monthItems.length >= 12) {
+        let myMonthItems = [...monthItems];
+        let monthItem = myMonthItems[item.date.getMonth()];
+        monthItem.addItem(item);
+        return myMonthItems;
+    }
+    return monthItems;
 }
 
 function api(state = apiState, action) {

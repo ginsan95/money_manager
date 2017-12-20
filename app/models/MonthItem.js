@@ -29,4 +29,23 @@ export default class MonthItem {
         let date = new Date('01 ' + this.month + ' 2000');
         return date.getMonth();
     }
+
+    addItem(item) {
+        let dayItem = this.findSameDayItem(item.date);
+        if (dayItem) {
+            dayItem.addItem(item);
+        } else {
+            this.dateItems.push(new DayItem([item]));
+        }
+        this.totalPrice += item.price;
+    }
+
+    findSameDayItem(date) {
+        for (let i=0; i<this.dayItems.length; i++) {
+            if (this.dayItems[i].date.getDate() == date.getDate()) {
+                return this.dayItems[i];
+            }
+        }
+        return null;
+    }
 }
