@@ -16,7 +16,7 @@ export default class MonthItem {
 
         let totalPrice = 0;
         for (let i=0; i<dayItems.length; i++) {
-            totalPrice += dayItems[0].totalPrice;
+            totalPrice += dayItems[i].totalPrice;
         }
         this.totalPrice = totalPrice;
     }
