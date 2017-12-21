@@ -70,16 +70,17 @@ export function addItem(namespace, item) {
 // endregion
 
 // region Delete Item
-export function deleteItemsAction(namespace, isProcessing, ids = [], error = null) {
+export function deleteItemsAction(namespace, isProcessing, ids = [], date = null, error = null) {
     return {
         type: typeFrom(namespace, DELETE_ITEM),
         ids,
         isProcessing,
+        date,
         error
     }
 }
 
-export function deleteItems(namespace, ids) {
+export function deleteItems(namespace, ids, date) {
     return async dispatch => {
         dispatch(deleteItemsAction(namespace, true));
         try {
@@ -87,9 +88,9 @@ export function deleteItems(namespace, ids) {
                 return apiDeleteItem(id);
             });
             const json = await Promise.all(fetches);
-            dispatch(deleteItemsAction(namespace, false, ids));
+            dispatch(deleteItemsAction(namespace, false, ids, date));
         } catch (e) {
-            dispatch(deleteItemsAction(namespace, false, [], e));
+            dispatch(deleteItemsAction(namespace, false, [], null, e));
         }
     }
 }

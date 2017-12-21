@@ -1,4 +1,4 @@
-import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND, CHANGE_YEAR, ADD_ITEM } from 'actions/actionTypes';
+import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND, CHANGE_YEAR, ADD_ITEM, DELETE_ITEM } from 'actions/actionTypes';
 import { combineReducers } from 'redux'
 import MonthItem from '../models/MonthItem';
 import DayItem from '../models/DayItem';
@@ -32,6 +32,8 @@ function monthItems(state = defaultMonthItems, action) {
             return monthItems;
         case `month/${ADD_ITEM}`:
             return addItem(state, action);
+        case `month/${DELETE_ITEM}`:
+            return deleteItem(state, action);
         default:
             return state;
     }
@@ -44,6 +46,17 @@ function addItem(monthItems, action) {
         let myMonthItems = [...monthItems];
         let monthItem = myMonthItems[item.date.getMonth()];
         monthItem.addItem(item);
+        return myMonthItems;
+    }
+    return monthItems;
+}
+
+function deleteItem(monthItems, action) {
+    const {ids, date} = action;
+    if (ids.length > 0) {
+        let myMonthItems = [...monthItems];
+        let monthItem = myMonthItems[date.getMonth()];
+        monthItem.deleteItems(ids, date);
         return myMonthItems;
     }
     return monthItems;

@@ -40,6 +40,21 @@ export default class MonthItem {
         this.totalPrice += item.price;
     }
 
+    deleteItems(ids, date) {
+        let dayItem = this.findSameDayItem(date);
+        if (dayItem) {
+            this.totalPrice -= dayItem.totalPrice;
+            dayItem.deleteItems(ids);
+            this.totalPrice += dayItem.totalPrice;
+
+            // check if the dayItem still have any more items
+            if (dayItem.items.length <= 0) {
+                const index = this.dayItems.indexOf(dayItem);
+                this.dayItems.splice(index, 1);
+            }
+        }
+    }
+
     findSameDayItem(date) {
         for (let i=0; i<this.dayItems.length; i++) {
             if (this.dayItems[i].date.getDate() == date.getDate()) {

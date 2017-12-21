@@ -61,7 +61,7 @@ class TodayScreen extends Component {
         }).map(item => {
             return item.id;
         });
-        this.props.handleDeleteItems(ids);
+        this.props.handleDeleteItems(ids, this.getDate());
     }
 
     calculateTotal = () => {
@@ -149,8 +149,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         handleDismissEditing: () => {
             dispatch(dismissEditing(namespace));
         },
-        handleDeleteItems: (ids) => {
-            dispatch(deleteItems(namespace, ids));
+        handleDeleteItems: (ids, date) => {
+            dispatch(deleteItems(namespace, ids, date));
         },
         setItems: (items) => {
             dispatch(setItems(namespace, items));

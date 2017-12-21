@@ -19,4 +19,17 @@ export default class DayItem {
         this.items.push(item);
         this.totalPrice += item.price;
     }
+
+    deleteItems(ids) {
+        this.items = this.items.filter(item => {
+            for (let i=0; i<ids.length; i++) {
+                if (item.id === ids[i]) {
+                    ids.splice(i, 1);
+                    this.totalPrice -= item.price;
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
 }
