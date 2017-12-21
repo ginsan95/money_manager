@@ -1,3 +1,5 @@
+import DayItem from './DayItem';
+
 export default class MonthItem {
     constructor(dayItems, month, isExpended = true) {
         this.dayItems = dayItems;
@@ -35,7 +37,7 @@ export default class MonthItem {
         if (dayItem) {
             dayItem.addItem(item);
         } else {
-            this.dateItems.push(new DayItem([item]));
+            this.dayItems.push(new DayItem([item]));
         }
         this.totalPrice += item.price;
     }
