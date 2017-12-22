@@ -8,19 +8,43 @@ import MonthlyItemList from './MonthlyItemList';
 import { Container } from '../../components/Container';
 import MonthItem from '../../models/MonthItem';
 import SelectedYearHeader from './SelectedYearHeader';
+import AddDayButton from './AddDayButton';
 
 export class MonthScreen extends Component {
     static navigationOptions = ({navigation}) => {
         const {params} = navigation.state;
-        return {
+        let options = {
             title: 'Monthly Spending'
+        };
+        if (params && params.handleAddDay) {
+            options.headerRight = (<AddDayButton handleAddDay={params.handleAddDay}/>);
         }
+        return options;
+    }
+
+    componentWillMount() {
+        this.props.navigation.setParams({
+            handleAddDay: this.handleAddDay
+        });
     }
 
     gotoDayScreen = (items) => {
         this.props.navigation.navigate(
             'Day', {
                 items,
+                namespace: 'month',
+                isFirstTime: true
+            }
+        )
+    }
+
+    handleAddDay = (date) => {
+        let monthItem = this.props.monthItems[date.getMonth()];
+        let dayItem = monthItem.findSameDayItem(date);
+        this.props.navigation.navigate(
+            'Day', {
+                items: dayItem ? dayItem.items : [],
+                date,
                 namespace: 'month',
                 isFirstTime: true
             }

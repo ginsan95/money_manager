@@ -72,7 +72,10 @@ class TodayScreen extends Component {
     }
 
     getDate = () => {
-        if (this.props.navigation.state.params 
+        if (this.props.navigation.state.params
+            && this.props.navigation.state.params.date) {
+            return this.props.navigation.state.params.date;
+        } else if (this.props.navigation.state.params 
             && this.props.navigation.state.params.items
             && this.props.navigation.state.params.items.length > 0) {
             return this.props.navigation.state.params.items[0].date;
