@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, SectionList, Button, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types'
-import DayItemCell from './DayItemCell';
+import DayItemCell from '../common/DayItemCell';
 import MonthlyItemHeader from './MonthlyItemHeader';
 import { connect } from 'react-redux';
 import Item from '../../models/Item';

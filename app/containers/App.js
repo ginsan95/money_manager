@@ -9,7 +9,7 @@ import { createLogger } from 'redux-logger'
 import { TabNavigator } from 'react-navigation';
 import TodayNavigator from './today/TodayNavigator';
 import MonthNavigator from './month/MonthNavigator';
-import { FilterNavigator } from './filter/FilterScreen';
+import FilterNavigator from './filter/FilterNavigator';
 import 'ObjectsExtension';
 
 const AppNavigator = TabNavigator({
@@ -37,8 +37,17 @@ const AppNavigator = TabNavigator({
                 )
             }
         },
-        Filter: { 
-            screen: FilterNavigator 
+        Filter: {
+            screen: FilterNavigator,
+            navigationOptions: {
+                tabBarLabel: 'Filter',
+                tabBarIcon: ({ tintColor }) => (
+                    <Image
+                      source={require('images/ic_filter.png')}
+                      style={[{tintColor: tintColor}]}
+                    />
+                )
+            }
         }
     },
     {
