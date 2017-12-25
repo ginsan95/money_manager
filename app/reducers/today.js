@@ -80,7 +80,8 @@ const todayReducer = (namespace) => combineReducers ({
 });
 export default combineReducers ({
     today: todayReducer('today'),
-    month: todayReducer('month')
+    month: todayReducer('month'),
+    filter: todayReducer('filter')
 });
 
 function typeFrom(namespace, type) {

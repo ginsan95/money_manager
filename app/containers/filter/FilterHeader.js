@@ -4,40 +4,54 @@ import PropTypes from 'prop-types';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
 export default class FilterHeader extends Component {
+    handleFilterItems = () => {
+        let {start, end} = this.props.dates;
+        const startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+        const endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999);
+        this.props.handleFilterItems(startDate, endDate);
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.dateLayout}>
-                    <DateTextInput/>
-                    <DateTextInput/>
+                    <DateTextInput
+                        namespace='start'
+                        date={this.props.dates.start}
+                        handleChangeDate={this.props.handleChangeDate}/>
+                    <DateTextInput
+                        namespace='end'
+                        date={this.props.dates.end}
+                        handleChangeDate={this.props.handleChangeDate}/>
                 </View>
                 <View style={styles.buttonContainer}> 
                     <Button
                         title='Filter' 
-                        onPress={() => {}}/>
+                        onPress={this.handleFilterItems}/>
                 </View>
             </View>
         );
     }
 }
 
+FilterHeader.propTypes = {
+    dates: PropTypes.shape({
+        start: PropTypes.instanceOf(Date).isRequired,
+        end: PropTypes.instanceOf(Date).isRequired
+    }).isRequired,
+    handleFilterItems: PropTypes.func.isRequired
+}
+
 class DateTextInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            date: new Date(),
             datePickerVisible: false
         }
     }
 
     getDateString = () => {
-        return this.state.date.toLocaleString('en-MY', {day:'numeric', month:'numeric', year:'numeric'});
-    }
-
-    handleSelectDate = (date) => {
-        this.setState({
-            date
-        });
+        return this.props.date.toLocaleString('en-MY', {day:'numeric', month:'numeric', year:'numeric'});
     }
 
     handleShowDatePicker = () => {
@@ -47,10 +61,8 @@ class DateTextInput extends Component {
     }
 
     handleSelectDate = (date) => {
-        this.setState({
-            date,
-            datePickerVisible: false
-        });
+        this.props.handleChangeDate(this.props.namespace, date);
+        this.handleDismissDatePicker();
     }
 
     handleDismissDatePicker = () => {

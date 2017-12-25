@@ -8,3 +8,6 @@ export const SET_ITEMS = 'SET_ITEMS';
 export const FETCH_MONTH_ITEMS = 'FETCH_MONTH_ITEMS';
 export const TOGGLE_MONTH_EXPEND = "TOGGLE_MONTH_EXPEND";
 export const CHANGE_YEAR = "CHANGE_YEAR";
+
+export const FETCH_FILTER_ITEMS = 'FETCH_FILTER_ITEMS';
+export const CHANGE_DATE = 'CHANGE_DATE';
