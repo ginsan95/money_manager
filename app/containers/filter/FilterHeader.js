@@ -17,11 +17,11 @@ export default class FilterHeader extends Component {
                 <View style={styles.dateLayout}>
                     <DateTextInput
                         namespace='start'
-                        date={this.props.dates.start}
+                        dates={this.props.dates}
                         handleChangeDate={this.props.handleChangeDate}/>
                     <DateTextInput
                         namespace='end'
-                        date={this.props.dates.end}
+                        dates={this.props.dates}
                         handleChangeDate={this.props.handleChangeDate}/>
                 </View>
                 <View style={styles.buttonContainer}> 
@@ -51,8 +51,13 @@ class DateTextInput extends Component {
     }
 
     getDateString = () => {
-        return this.props.date.toLocaleString('en-MY', {day:'numeric', month:'numeric', year:'numeric'});
+        const date = this.props.dates[this.props.namespace];
+        return date.toLocaleString('en-MY', {day:'numeric', month:'numeric', year:'numeric'});
     }
+
+    getDatePickerMax = () => this.props.namespace === 'start' ? this.props.dates.end : null;
+
+    getDatePickerMin = () => this.props.namespace === 'end' ? this.props.dates.start : null;
 
     handleShowDatePicker = () => {
         this.setState({
@@ -81,10 +86,21 @@ class DateTextInput extends Component {
                     isVisible={this.state.datePickerVisible}
                     onConfirm={this.handleSelectDate}
                     onCancel={this.handleDismissDatePicker}
-                    mode='date'/>
+                    mode='date'
+                    minimumDate={this.getDatePickerMin()}
+                    maximumDate={this.getDatePickerMax()}/>
             </View>
         );
     }
+}
+
+DateTextInput.propTypes = {
+    namespace: PropTypes.string.isRequired,
+    dates: PropTypes.shape({
+        start: PropTypes.instanceOf(Date).isRequired,
+        end: PropTypes.instanceOf(Date).isRequired
+    }).isRequired,
+    handleChangeDate: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 import { StackNavigator } from 'react-navigation';
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Container } from '../../components/Container';
@@ -26,6 +26,13 @@ export class FilterScreen extends Component {
         )
     }
 
+    calculateTotal = () => {
+        let total = 0;
+        const {dayItems} = this.props;
+        dayItems.forEach((dayItem) => total += dayItem.totalPrice);
+        return total;
+    }
+
     render() {
         return (
             <Container>
@@ -35,6 +42,7 @@ export class FilterScreen extends Component {
                     handleFilterItems={this.props.handleFilterItems}
                     handleItemClick={this.gotoDayScreen}
                     handleChangeDate={this.props.handleChangeDate} />
+                <Text>Total: ${this.calculateTotal().toFixed(2)}</Text>
                 <ProgressDialog 
                     visible={this.props.api.isFetching} 
                     message="Fetching..." />
