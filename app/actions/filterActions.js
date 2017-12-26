@@ -2,6 +2,7 @@ import { FETCH_FILTER_ITEMS, CHANGE_DATE } from './actionTypes';
 import { getItems } from '../api/API';
 import Item from '../models/Item';
 import DayItem from '../models/DayItem';
+import ItemManager from '../managers/ItemManager';
 
 // region Fetch Items
 export function requestItems() {
@@ -25,30 +26,12 @@ export function fetchItems(startDate, endDate) {
         dispatch(requestItems());
         try {
             const json = await getItems(startDate, endDate);
-            dispatch(receiveItems(convertDayItems(json)));
+            const items = ItemManager.getInstance().convertToItems(json);
+            dispatch(receiveItems(ItemManager.getInstance().convertToDayItems(items)));
         } catch (error) {
             dispatch(receiveItems([], error));
         }
     }
-}
-
-function convertDayItems(json) {
-    let dayItems = [];
-    if (json.length > 0) {
-        let array = [Item.fromJson(json[0])];
-        for(let i=1; i<json.length; i++) {
-            let item = Item.fromJson(json[i]);
-            if (array[0].date.sameDateAs(item.date)) {
-                array.push(item);
-            } else {
-                dayItems.push(new DayItem(array));
-                array = [item];
-            }
-        }
-        dayItems.push(new DayItem(array));
-    }
-    console.log('filterItems', dayItems);
-    return dayItems;
 }
 // endregion
 

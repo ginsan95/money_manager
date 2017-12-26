@@ -55,6 +55,10 @@ FilterScreen.propTypes = {
     dayItems: PropTypes.arrayOf(
         PropTypes.instanceOf(DayItem).isRequired
     ).isRequired,
+    dates: PropTypes.shape({
+        start: PropTypes.instanceOf(Date).isRequired,
+        end: PropTypes.instanceOf(Date).isRequired
+    }).isRequired,
     api: PropTypes.shape({
         isFetching: PropTypes.bool.isRequired
     })

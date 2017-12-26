@@ -52,7 +52,9 @@ export default class MonthItem {
             // check if the dayItem still have any more items
             if (dayItem.items.length <= 0) {
                 const index = this.dayItems.indexOf(dayItem);
-                this.dayItems.splice(index, 1);
+                if (index >= 0) {
+                    this.dayItems.splice(index, 1);
+                }
             }
         }
     }

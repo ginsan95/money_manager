@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import rootReducer from 'reducers';
+import rootReducer from '../reducers';
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 
@@ -19,7 +19,7 @@ const AppNavigator = TabNavigator({
                 tabBarLabel: 'Today',
                 tabBarIcon: ({ tintColor }) => (
                     <Image
-                      source={require('images/ic_clock.png')}
+                      source={require('../images/ic_clock.png')}
                       style={[{tintColor: tintColor}]}
                     />
                 )
@@ -31,7 +31,7 @@ const AppNavigator = TabNavigator({
                 tabBarLabel: 'Month',
                 tabBarIcon: ({ tintColor }) => (
                     <Image
-                      source={require('images/ic_calendar.png')}
+                      source={require('../images/ic_calendar.png')}
                       style={[{tintColor: tintColor}]}
                     />
                 )
@@ -43,7 +43,7 @@ const AppNavigator = TabNavigator({
                 tabBarLabel: 'Filter',
                 tabBarIcon: ({ tintColor }) => (
                     <Image
-                      source={require('images/ic_filter.png')}
+                      source={require('../images/ic_filter.png')}
                       style={[{tintColor: tintColor}]}
                     />
                 )

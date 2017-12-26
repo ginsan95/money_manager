@@ -1,4 +1,4 @@
-import { ADD_ITEM, DELETE_ITEM, FETCH_ITEMS, LONG_SELECT_ITEM, DISMISS_EDITING, SET_ITEMS } from 'actions/actionTypes';
+import { ADD_ITEM, DELETE_ITEM, FETCH_ITEMS, LONG_SELECT_ITEM, DISMISS_EDITING, SET_ITEMS } from '../actions/actionTypes';
 import { combineReducers } from 'redux'
 
 const apiState = {

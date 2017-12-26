@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Button } from 'react-native';
-import { Container } from 'components/Container';
+import { Container } from '../../components/Container';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addItem, deleteItems, fetchItems, longSelectItem, dismissEditing, setItems } from '../../actions/todayActions';

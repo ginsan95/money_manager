@@ -3,6 +3,7 @@ import { getItems } from '../api/API';
 import Item from '../models/Item';
 import DayItem from '../models/DayItem';
 import MonthItem from '../models/MonthItem';
+import ItemManager from '../managers/ItemManager';
 
 // region Fetch Items
 export function requestItems() {
@@ -28,51 +29,13 @@ export function fetchItems(year) {
             const startDate = new Date(year, 1, 1, 0, 0, 0, 0);
             const endDate = new Date(year, 12, 31, 23, 59, 59, 999);
             const json = await getItems(startDate, endDate);
-            dispatch(receiveItems(convertToMonthItems(json)));
+            const items = ItemManager.getInstance().convertToItems(json);
+            console.log('items', items);
+            dispatch(receiveItems(ItemManager.getInstance().convertToMonthItems(items)));
         } catch (e) {
             dispatch(receiveItems([], e));
         }
     }
-}
-
-function convertToMonthItems(json) {
-    let map = new Map();
-    for (let i=0; i<Date.months.length; i++) {
-        if (!map.has(Date.months[i])) {
-            map.set(Date.months[i], []);
-        }
-    }
-
-    for(let i=0; i<json.length; i++) {
-        let item = Item.fromJson(json[i]);
-        let month = item.date.toMonthString();
-        map.get(month).push(item);
-    }
-
-    const array = Array.from(map, ([key, val]) => {
-        return new MonthItem(convertDayItems(val), key);
-    });
-
-    console.log(array);
-    return array;
-}
-
-function convertDayItems(items) {
-    let dayItems = [];
-    if (items.length > 0) {
-        let array = [items[0]];
-        for(let i=1; i<items.length; i++) {
-            let item = items[i];
-            if (array[0].date.sameDateAs(item.date)) {
-                array.push(item);
-            } else {
-                dayItems.push(new DayItem(array));
-                array = [item];
-            }
-        }
-        dayItems.push(new DayItem(array));
-    }
-    return dayItems;
 }
 // endregion
 

@@ -1,6 +1,7 @@
 import { ADD_ITEM, DELETE_ITEM, FETCH_ITEMS, LONG_SELECT_ITEM, DISMISS_EDITING, SET_ITEMS } from './actionTypes';
 import { getItems, postItem, deleteItem as apiDeleteItem } from '../api/API';
 import Item from '../models/Item';
+import ItemManager from '../managers/ItemManager';
 
 // region Fetch Items
 export function requestItems(namespace) {
@@ -26,19 +27,11 @@ export function fetchItems(namespace, date) {
             const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
             const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999);
             const json = await getItems(startDate, endDate);
-            dispatch(receiveItems(namespace, convertItems(json)));
+            dispatch(receiveItems(namespace, ItemManager.getInstance().convertToItems(json)));
         } catch (e) {
             dispatch(receiveItems(namespace, [], e));
         }
     }
-}
-
-function convertItems(json) {
-    let items = [];
-    for(let i=0; i<json.length; i++) {
-        items[i] = Item.fromJson(json[i]);
-    }
-    return items;
 }
 // endregion
 

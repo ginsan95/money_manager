@@ -1,4 +1,4 @@
-import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND, CHANGE_YEAR, ADD_ITEM, DELETE_ITEM } from 'actions/actionTypes';
+import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND, CHANGE_YEAR, ADD_ITEM, DELETE_ITEM } from '../actions/actionTypes';
 import { combineReducers } from 'redux'
 import MonthItem from '../models/MonthItem';
 import DayItem from '../models/DayItem';
@@ -51,6 +51,7 @@ function addItem(monthItems, action) {
     return monthItems;
 }
 
+// for month/DELETE_ITEM
 function deleteItem(monthItems, action) {
     const {ids, date} = action;
     if (ids.length > 0) {
