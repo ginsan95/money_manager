@@ -1,11 +1,17 @@
 Date.prototype.toMyTimeString = function() {
-    return this.toLocaleString('en-MY', {hour: 'numeric', minute:'numeric', hour12: true});
+    var dateFormat = require('dateformat');
+    return dateFormat(this, "h:mm TT")
+}
+Date.prototype.toMyDayDateString = function() {
+    var dateFormat = require('dateformat');
+    return dateFormat(this, "dddd, d/m/yyyy")
 }
 Date.prototype.toMyDateString = function() {
-    return this.toLocaleString('en-MY', {weekday: 'long', day:'numeric', month:'numeric', year:'numeric'});
+    var dateFormat = require('dateformat');
+    return dateFormat(this, "d/m/yyyy")
 }
 Date.prototype.toMonthString = function() {
-    return this.toLocaleString('en-MY', {month: 'long'});
+    return Date.months[this.getMonth()];
 }
 Date.prototype.sameDateAs = function(date) {
     return this.getDate() === date.getDate()

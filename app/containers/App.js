@@ -10,7 +10,7 @@ import { TabNavigator } from 'react-navigation';
 import TodayNavigator from './today/TodayNavigator';
 import MonthNavigator from './month/MonthNavigator';
 import FilterNavigator from './filter/FilterNavigator';
-import 'ObjectsExtension';
+import '../ObjectsExtension';
 
 const AppNavigator = TabNavigator({
         Today: { 

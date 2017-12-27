@@ -52,12 +52,12 @@ class DateTextInput extends Component {
 
     getDateString = () => {
         const date = this.props.dates[this.props.namespace];
-        return date.toLocaleString('en-MY', {day:'numeric', month:'numeric', year:'numeric'});
+        return date.toMyDateString();
     }
 
-    getDatePickerMax = () => this.props.namespace === 'start' ? this.props.dates.end : null;
+    getDatePickerMax = () => this.props.namespace === 'start' ? this.props.dates.end : undefined;
 
-    getDatePickerMin = () => this.props.namespace === 'end' ? this.props.dates.start : null;
+    getDatePickerMin = () => this.props.namespace === 'end' ? this.props.dates.start : undefined;
 
     handleShowDatePicker = () => {
         this.setState({

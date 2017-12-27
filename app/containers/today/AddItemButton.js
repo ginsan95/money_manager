@@ -123,7 +123,8 @@ export default class AddItemButton extends Component {
                             onConfirm={this.handleSelectDate}
                             onCancel={this.handleDismissDatePicker}
                             date={this.props.date}
-                            mode='time'/>
+                            mode='time'
+                            is24Hour={false}/>
                         <Button title="Add" onPress={this.handleAddItem}/>
                     </View>
                 </Dialog>
