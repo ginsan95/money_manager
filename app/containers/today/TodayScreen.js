@@ -89,7 +89,7 @@ class TodayScreen extends Component {
     render() {
         return (
             <Container>
-                <Text>Date: {this.getDate().toMyDateString()}</Text>
+                <Text>Date: {this.getDate().toMyDayDateString()}</Text>
                 <ItemList 
                     items={this.props.items} 
                     handleItemClick={this.props.handleItemClick} 

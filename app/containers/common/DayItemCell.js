@@ -15,7 +15,7 @@ export default class DayItemCell extends Component {
             <View>
                 {this.props.isExpended && <TouchableWithoutFeedback onPress={this.handleClick} >
                     <View style={[styles.container, styles.detail]}>
-                        <Text style={styles.name}>{dayItem.date.toMyDateString()}</Text>
+                        <Text style={styles.name}>{dayItem.date.toMyDayDateString()}</Text>
                         <View style={styles.price}>
                             <Text>$</Text>
                             <Text style={styles.priceBox}>{dayItem.totalPrice.toFixed(2)}</Text>
