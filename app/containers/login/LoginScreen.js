@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { login } from '../../actions/loginActions';
+import { ProgressDialog } from 'react-native-simple-dialogs';
+import ErrorDialog from '../../components/ErrorDialog';
 
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
     static navigationOptions = {
         headerStyle: {
             backgroundColor: 'white',
@@ -9,8 +13,32 @@ export default class LoginScreen extends Component {
         }
     }
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: '',
+            password: ''
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps !== this.props) {
+            if (this.props.success) {
+                this.props.navigation.navigate('App');
+            }
+        }
+    }
+
+    onUsernameChange = (username) => {
+        this.setState({username});
+    }
+
+    onPasswordChange = (password) => {
+        this.setState({password});
+    }
+
     handleLogin = () => {
-        this.props.navigation.navigate('App');
+        this.props.handleLogin(this.state.username, this.state.password);
     }
 
     handleSignUp = () => {
@@ -23,10 +51,13 @@ export default class LoginScreen extends Component {
                 <Image style={styles.logo} source={require('../../images/app_icon.png')}/>
                 <TextInput
                     style={styles.textInput}
-                    placeholder='Username'/>
+                    placeholder='Username'
+                    onChangeText={this.onUsernameChange} />
                 <TextInput
                     style={styles.textInput}
-                    placeholder='Password'/>
+                    placeholder='Password'
+                    onChangeText={this.onPasswordChange}
+                    secureTextEntry={true} />
                 <View style={styles.button}>
                     <Button 
                         title='Login'
@@ -36,6 +67,12 @@ export default class LoginScreen extends Component {
                 <TouchableOpacity style={styles.subButton} onPress={this.handleSignUp}>
                     <Text>Sign Up</Text>
                 </TouchableOpacity>
+                <ProgressDialog
+                    visible={this.props.isProcessing} 
+                    message="Logging In..." />
+                <ErrorDialog
+                    visible={!this.props.isProcessing && !this.props.success}
+                    error={this.props.error} />
             </View>
         );
     }
@@ -74,3 +111,20 @@ const styles = StyleSheet.create({
         margin: 8
     }
 });
+
+const mapStateToProps = (state, ownProps) => {
+    return state.login;
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        handleLogin: (username, password) => {
+            dispatch(login(username, password));
+        }
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LoginScreen);

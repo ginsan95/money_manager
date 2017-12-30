@@ -1,3 +1,7 @@
+// Login
+export const LOGIN = 'LOGIN';
+export const SIGN_UP = 'SIGN_UP';
+
 // Today
 export const ADD_ITEM = 'ADD_ITEM';
 export const DELETE_ITEM = 'DELETE_ITEM';
