@@ -1,4 +1,4 @@
-import { LOGIN, SIGN_UP } from './actionTypes';
+import { LOGIN, SIGN_UP, RESET_DATA } from './actionTypes';
 import { login as apiLogin, signUp as apiSignUp } from '../api/API'; 
 
 export function loginAction(isProcessing, success = false, error = null) {
@@ -43,10 +43,16 @@ export function signUp(username, password) {
             if (json.objectId) {
                 dispatch(signUpAction(false, true));
             } else {
-                dispatch(signUpAction(false, false, 'Failed to sign up'));
+                dispatch(signUpAction(false, false, json));
             }
         } catch (e) {
             dispatch(signUpAction(false, false, e));
         }
+    }
+}
+
+export function resetData() {
+    return {
+        type: RESET_DATA
     }
 }

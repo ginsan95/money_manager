@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { login } from '../../actions/loginActions';
 import { ProgressDialog } from 'react-native-simple-dialogs';
@@ -42,7 +43,9 @@ class LoginScreen extends Component {
     }
 
     handleSignUp = () => {
-        this.props.navigation.navigate('SignUp');
+        this.props.navigation.navigate('SignUp', {
+            handleLogin: this.props.handleLogin
+        });
     }
 
     render() {
@@ -112,8 +115,13 @@ const styles = StyleSheet.create({
     }
 });
 
+LoginScreen.propTypes = {
+    isProcessing: PropTypes.bool.isRequired,
+    success: PropTypes.bool.isRequired
+}
+
 const mapStateToProps = (state, ownProps) => {
-    return state.login;
+    return state.login.login;
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {

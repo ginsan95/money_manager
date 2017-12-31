@@ -1,4 +1,4 @@
-import { LOGIN, SIGN_UP } from '../actions/actionTypes';
+import { LOGIN, SIGN_UP, RESET_DATA } from '../actions/actionTypes';
 import { combineReducers } from 'redux';
 
 const initialState = {
@@ -7,18 +7,37 @@ const initialState = {
     error: null
 }
 
-const login = (state = initialState, action) => {
+function login(state = initialState, action) {
     if (action.error) {
         console.log('login', action.error);
     }
 
     switch(action.type) {
         case LOGIN:
-        case SIGN_UP:
             return action;
+        case RESET_DATA:
+            return initialState;
         default:
             return state;
     }
 }
 
-export default login;
+function signUp(state = initialState, action) {
+    if (action.error) {
+        console.log('login', action.error);
+    }
+
+    switch(action.type) {
+        case SIGN_UP:
+            return action;
+        case RESET_DATA:
+            return initialState;
+        default:
+            return state;
+    }
+}
+
+export default combineReducers ({
+    login,
+    signUp
+});

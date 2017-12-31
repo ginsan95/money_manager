@@ -1,3 +1,5 @@
+export const RESET_DATA = 'RESET_DATA';
+
 // Login
 export const LOGIN = 'LOGIN';
 export const SIGN_UP = 'SIGN_UP';
