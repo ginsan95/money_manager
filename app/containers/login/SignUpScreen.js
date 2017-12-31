@@ -5,8 +5,11 @@ import { connect } from 'react-redux';
 import { signUp, resetData } from '../../actions/loginActions';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import ErrorDialog from '../../components/ErrorDialog';
+import ValidationTextInput from '../../components/ValidationTextInput';
 
 class SignUpScreen extends Component {
+    errorPlaceholders = ['Password and Confirm password must be the same'];
+
     static navigationOptions = {
         headerStyle: {
             backgroundColor: 'white',
@@ -19,7 +22,10 @@ class SignUpScreen extends Component {
         this.state = {
             username: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            usernameError: null,
+            passwordError: null,
+            confirmPasswordError: null
         }
         props.handleResetData();
     }
@@ -37,23 +43,49 @@ class SignUpScreen extends Component {
     }
 
     onUsernameChange = (username) => {
-        this.setState({username});
+        this.setState({
+            username,
+            usernameError: null
+        });
     }
 
     onPasswordChange = (password) => {
-        this.setState({password});
+        this.setState({
+            password,
+            passwordError: null
+        });
     }
 
     onConfirmPasswordChange = (confirmPassword) => {
-        this.setState({confirmPassword});
+        this.setState({
+            confirmPassword,
+            confirmPasswordError: null
+        });
     }
 
     handleSignUp = () => {
         const {username, password, confirmPassword} = this.state;
-        if (password === confirmPassword) {
-            this.props.handleSignUp(username, password);
+        if (!username || username.length === 0) {
+            this.setState({
+                usernameError: 0
+            });
+        } else if (!password || password.length === 0) {
+            this.setState({
+                passwordError: 0
+            });
+        } else if (!confirmPassword || confirmPassword.length === 0) {
+            this.setState({
+                confirmPasswordError: 0
+            });
+        } else if (password !== confirmPassword) {
+            this.setState({
+                password: '',
+                confirmPassword: '',
+                passwordError: 1,
+                confirmPasswordError: 1
+            });
         } else {
-            
+            this.props.handleSignUp(username, password);
         }
     }
 
@@ -61,20 +93,27 @@ class SignUpScreen extends Component {
         return (
             <View style={styles.container}>
                 <Image style={styles.logo} source={require('../../images/app_icon.png')}/>
-                <TextInput
+                <ValidationTextInput
                     style={styles.textInput}
-                    placeholder='Username'
-                    onChangeText={this.onUsernameChange} />
-                <TextInput
+                    name='Username'
+                    onChangeText={this.onUsernameChange}
+                    error={this.state.usernameError}/>
+                <ValidationTextInput 
                     style={styles.textInput}
-                    placeholder='Password'
+                    name='Password'
+                    value={this.state.password}
                     onChangeText={this.onPasswordChange}
-                    secureTextEntry={true} />
-                <TextInput
+                    error={this.state.passwordError}
+                    errorPlaceholders= {this.errorPlaceholders}
+                    secureTextEntry={true}/>
+                <ValidationTextInput 
                     style={styles.textInput}
-                    placeholder='Confirm password'
+                    name='Confirm password'
+                    value={this.state.confirmPassword}
                     onChangeText={this.onConfirmPasswordChange}
-                    secureTextEntry={true} />
+                    error={this.state.confirmPasswordError}
+                    errorPlaceholders= {this.errorPlaceholders}
+                    secureTextEntry={true}/>
                 <View style={styles.button}>
                     <Button 
                         title='Sign Up'

@@ -15,7 +15,6 @@ export async function login(username, password) {
         'login': username,
         'password': password
     }
-    console.log('body', body);
     const response = await fetch(API_URL + API_LOGIN, {
         method: 'post',
         headers,

@@ -5,19 +5,15 @@ import PropTypes from 'prop-types';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { postItem } from '../../api/API';
 import Item from '../../models/Item';
-
-const NAME_PLACEHOLDER = 'Name';
-const NAME_ERROR_PLACEHOLDER = 'Name cannot be empty';
-const PRICE_PLACEHOLDER = 'Price';
-const PRICE_ERROR_PLACEHOLDER = 'Price cannot be empty';
+import ValidationTextInput from '../../components/ValidationTextInput';
 
 export default class AddItemButton extends Component {
     initialState = {
         name: '',
         price: '',
         date: this.props.date,
-        namePlaceholder: NAME_PLACEHOLDER,
-        pricePlaceHolder: PRICE_PLACEHOLDER,
+        nameError: null,
+        priceError: null,
         datePickerVisible: false
     }
 
@@ -38,14 +34,14 @@ export default class AddItemButton extends Component {
     handleNameChange = (text) => {
         this.setState({
             name: text,
-            namePlaceholder: NAME_PLACEHOLDER
+            nameError: null
         });
     }
 
     handlePriceChange = (text) => {
         this.setState({
             price: text,
-            pricePlaceHolder: PRICE_PLACEHOLDER
+            priceError: null
         });
     }
 
@@ -73,11 +69,11 @@ export default class AddItemButton extends Component {
         let {name, price, date} = this.state;
         if (!name || name.length === 0) {
             this.setState({
-                namePlaceholder: NAME_ERROR_PLACEHOLDER
+                nameError: 0
             });
         } else if (!price || price.length === 0) {
             this.setState({
-                pricePlaceHolder: PRICE_ERROR_PLACEHOLDER
+                priceError: 0
             });
         } else {
             this.setState({
@@ -101,18 +97,18 @@ export default class AddItemButton extends Component {
                     onTouchOutside={() => this.setState({dialogVisible: false})}
                     onShow={this.resetData} >
                     <View>
-                        <TextInput 
-                            placeholder={this.state.namePlaceholder} 
+                        <ValidationTextInput
                             style={styles.textInput}
+                            name='Name'
                             onChangeText={this.handleNameChange}
                             autoFocus={true} 
-                            placeholderTextColor={this.state.namePlaceholder === NAME_PLACEHOLDER ? 'grey' : 'red'}/>
-                        <TextInput 
-                            placeholder={this.state.pricePlaceHolder} 
-                            style={styles.textInput} 
-                            onChangeText={this.handlePriceChange} 
+                            error={this.state.nameError}/>
+                        <ValidationTextInput
+                            style={styles.textInput}
+                            name='Price'
+                            onChangeText={this.handlePriceChange}
                             keyboardType="numeric"
-                            placeholderTextColor={this.state.pricePlaceHolder === PRICE_PLACEHOLDER ? 'grey' : 'red'}/>
+                            error={this.state.priceError}/>
                         <TextInput
                             ref={(input) => {this.dateInput = input}}
                             style={styles.textInput}

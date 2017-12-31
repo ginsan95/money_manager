@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { login } from '../../actions/loginActions';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import ErrorDialog from '../../components/ErrorDialog';
+import ValidationTextInput from '../../components/ValidationTextInput';
 
 class LoginScreen extends Component {
     static navigationOptions = {
@@ -18,7 +19,9 @@ class LoginScreen extends Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            usernameError: null,
+            passwordError: null
         }
     }
 
@@ -31,15 +34,32 @@ class LoginScreen extends Component {
     }
 
     onUsernameChange = (username) => {
-        this.setState({username});
+        this.setState({
+            username,
+            usernameError: null
+        });
     }
 
     onPasswordChange = (password) => {
-        this.setState({password});
+        this.setState({
+            password,
+            passwordError: null
+        });
     }
 
     handleLogin = () => {
-        this.props.handleLogin(this.state.username, this.state.password);
+        const {username, password} = this.state;
+        if (!username || username.length === 0) {
+            this.setState({
+                usernameError: 0
+            });
+        } else if (!password || password.length === 0) {
+            this.setState({
+                passwordError: 0
+            });
+        } else {
+            this.props.handleLogin(username, password);
+        }
     }
 
     handleSignUp = () => {
@@ -52,15 +72,17 @@ class LoginScreen extends Component {
         return (
             <View style={styles.container}>
                 <Image style={styles.logo} source={require('../../images/app_icon.png')}/>
-                <TextInput
+                <ValidationTextInput 
                     style={styles.textInput}
-                    placeholder='Username'
-                    onChangeText={this.onUsernameChange} />
-                <TextInput
+                    name='Username'
+                    onChangeText={this.onUsernameChange}
+                    error={this.state.usernameError}/>
+                <ValidationTextInput 
                     style={styles.textInput}
-                    placeholder='Password'
+                    name='Password'
                     onChangeText={this.onPasswordChange}
-                    secureTextEntry={true} />
+                    error={this.state.passwordError}
+                    secureTextEntry={true}/>
                 <View style={styles.button}>
                     <Button 
                         title='Login'
