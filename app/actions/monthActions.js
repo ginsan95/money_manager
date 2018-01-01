@@ -29,11 +29,14 @@ export function fetchItems(year) {
             const startDate = new Date(year, 1, 1, 0, 0, 0, 0);
             const endDate = new Date(year, 12, 31, 23, 59, 59, 999);
             const json = await getItems(startDate, endDate);
-            const items = ItemManager.getInstance().convertToItems(json);
-            console.log('items', items);
-            dispatch(receiveItems(ItemManager.getInstance().convertToMonthItems(items)));
+            if (json.message && json.code) {
+                dispatch(receiveItems(ItemManager.getInstance().defaultMonthItems, json));
+            } else {
+                const items = ItemManager.getInstance().convertToItems(json);
+                dispatch(receiveItems(ItemManager.getInstance().convertToMonthItems(items)));
+            }
         } catch (e) {
-            dispatch(receiveItems([], e));
+            dispatch(receiveItems(ItemManager.getInstance().defaultMonthItems, e));
         }
     }
 }

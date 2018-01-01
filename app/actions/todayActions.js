@@ -27,7 +27,11 @@ export function fetchItems(namespace, date) {
             const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
             const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999);
             const json = await getItems(startDate, endDate);
-            dispatch(receiveItems(namespace, ItemManager.getInstance().convertToItems(json)));
+            if (json.message && json.code) {
+                dispatch(receiveItems(namespace, [], json));
+            } else {
+                dispatch(receiveItems(namespace, ItemManager.getInstance().convertToItems(json)));
+            }
         } catch (e) {
             dispatch(receiveItems(namespace, [], e));
         }
@@ -81,7 +85,11 @@ export function deleteItems(namespace, ids, date) {
                 return apiDeleteItem(id);
             });
             const json = await Promise.all(fetches);
-            dispatch(deleteItemsAction(namespace, false, ids, date));
+            if (json.message && json.code) {
+                dispatch(deleteItemsAction(namespace, false, [], null, json));
+            } else {
+                dispatch(deleteItemsAction(namespace, false, ids, date));
+            }
         } catch (e) {
             dispatch(deleteItemsAction(namespace, false, [], null, e));
         }

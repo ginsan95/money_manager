@@ -1,4 +1,5 @@
 import Item from '../models/Item';
+import UserManager from '../managers/UserManager';
 
 export const API_URL = 'https://api.backendless.com/61A9EF51-6B59-822D-FF51-8501E38A2800/88AD2645-3DA4-8697-FF6D-315B7490ED00';
 export const API_LOGIN = '/users/login';
@@ -7,6 +8,12 @@ export const API_ITEMS = '/data/Items';
 
 const headers = {
     'Content-Type': 'application/json' 
+}
+function userHeaders() {
+    return {
+        ...headers,
+        'user-token': UserManager.getInstance().userToken
+    }
 }
 
 // region Login
@@ -43,11 +50,14 @@ export async function signUp(username, password) {
 export async function getItems(startDate, endDate) {
     let query = '';
     if (startDate && endDate) {
-        query = '?where=buy_date%3E%3D' + startDate.getTime() + '%20AND%20buy_date%3C%3D' + endDate.getTime();
+        query = '?where=' + encodeURIComponent(`ownerId=\'${UserManager.getInstance().objectId}\' AND buy_date>=${startDate.getTime()} AND buy_date<=${endDate.getTime()}`);
     }
     const sortBy = "&sortBy=buy_date";
     const pageSize = "&pageSize=100";
-    const response = await fetch(API_URL + API_ITEMS + query + sortBy + pageSize);
+    const response = await fetch(API_URL + API_ITEMS + query + sortBy + pageSize, {
+        method: 'get',
+        headers: userHeaders()
+    });
     const json = await response.json();
     return json;
 }
@@ -55,7 +65,7 @@ export async function getItems(startDate, endDate) {
 export async function postItem(item) {
     const response = await fetch(API_URL + API_ITEMS, {
         method: 'post',
-        headers,
+        headers: userHeaders(),
         body: item.toJson()
     });
     const json = await response.json();
@@ -65,7 +75,8 @@ export async function postItem(item) {
 export async function deleteItem(id) {
     const url = API_URL + API_ITEMS + '/' + id;
     const response = await fetch(url, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: userHeaders()
     });
     const json = await response.json();
     return json;

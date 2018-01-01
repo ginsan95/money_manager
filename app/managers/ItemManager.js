@@ -4,6 +4,20 @@ import MonthItem from '../models/MonthItem';
 
 export default class ItemManager {
     static instance = null;
+    defaultMonthItems = [
+        new MonthItem([], 'January'),
+        new MonthItem([], 'February'),
+        new MonthItem([], 'March'),
+        new MonthItem([], 'April'),
+        new MonthItem([], 'May'),
+        new MonthItem([], 'June'),
+        new MonthItem([], 'July'),
+        new MonthItem([], 'August'),
+        new MonthItem([], 'September'),
+        new MonthItem([], 'October'),
+        new MonthItem([], 'Novermber'),
+        new MonthItem([], 'December')    
+    ]
 
     static getInstance() {
         if (!this.instance) {

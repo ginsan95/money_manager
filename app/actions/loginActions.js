@@ -1,5 +1,6 @@
 import { LOGIN, SIGN_UP, RESET_DATA } from './actionTypes';
 import { login as apiLogin, signUp as apiSignUp } from '../api/API'; 
+import UserManager from '../managers/UserManager';
 
 export function loginAction(isProcessing, success = false, error = null) {
     return {
@@ -16,6 +17,8 @@ export function login(username, password) {
         try {
             const json = await apiLogin(username, password);
             if (json.objectId && json['user-token']) {
+                UserManager.getInstance().objectId = json.objectId;
+                UserManager.getInstance().userToken = json['user-token'];
                 dispatch(loginAction(false, true));
             } else {
                 dispatch(loginAction(false, false, json));

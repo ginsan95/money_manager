@@ -2,27 +2,13 @@ import { FETCH_MONTH_ITEMS, TOGGLE_MONTH_EXPEND, CHANGE_YEAR, ADD_ITEM, DELETE_I
 import { combineReducers } from 'redux'
 import MonthItem from '../models/MonthItem';
 import DayItem from '../models/DayItem';
-
-const defaultMonthItems = [
-    new MonthItem([], 'January'),
-    new MonthItem([], 'February'),
-    new MonthItem([], 'March'),
-    new MonthItem([], 'April'),
-    new MonthItem([], 'May'),
-    new MonthItem([], 'June'),
-    new MonthItem([], 'July'),
-    new MonthItem([], 'August'),
-    new MonthItem([], 'September'),
-    new MonthItem([], 'October'),
-    new MonthItem([], 'Novermber'),
-    new MonthItem([], 'December')    
-]
+import ItemManager from '../managers/ItemManager';
 
 const apiState = {
     isFetching: false
 }
 
-function monthItems(state = defaultMonthItems, action) {
+function monthItems(state = ItemManager.getInstance().defaultMonthItems, action) {
     switch (action.type) {
         case FETCH_MONTH_ITEMS:
             return !action.isFetching ? action.monthItems : state;
