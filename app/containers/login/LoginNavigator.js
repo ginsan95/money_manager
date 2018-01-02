@@ -3,6 +3,6 @@ import LoginScreen from './LoginScreen';
 import SignUpScreen from './SignUpScreen';
 
 export default StackNavigator({
-    Home: { screen: LoginScreen },
+    Login: { screen: LoginScreen },
     SignUp: { screen: SignUpScreen } 
 });

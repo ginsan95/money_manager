@@ -3,6 +3,6 @@ import MonthScreen from './MonthScreen';
 import TodayScreen from '../today/TodayScreen';
 
 export default StackNavigator({
-    Home: { screen: MonthScreen },
+    Month: { screen: MonthScreen },
     Day: { screen: TodayScreen }
 });

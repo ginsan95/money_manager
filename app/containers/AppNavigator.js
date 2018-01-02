@@ -4,6 +4,7 @@ import { TabNavigator } from 'react-navigation';
 import TodayNavigator from './today/TodayNavigator';
 import MonthNavigator from './month/MonthNavigator';
 import FilterNavigator from './filter/FilterNavigator';
+import AccountNavigator from './account/AccountNavigator';
 
 export default AppNavigator = TabNavigator({
     Today: { 
@@ -37,6 +38,18 @@ export default AppNavigator = TabNavigator({
             tabBarIcon: ({ tintColor }) => (
                 <Image
                   source={require('../images/ic_filter.png')}
+                  style={[{tintColor: tintColor}]}
+                />
+            )
+        }
+    },
+    Account: {
+        screen: AccountNavigator,
+        navigationOptions: {
+            tabBarLabel: 'Account',
+            tabBarIcon: ({ tintColor }) => (
+                <Image
+                  source={require('../images/ic_account.png')}
                   style={[{tintColor: tintColor}]}
                 />
             )

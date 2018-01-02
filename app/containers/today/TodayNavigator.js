@@ -3,7 +3,7 @@ import { StackNavigator } from 'react-navigation';
 import TodayScreen from './TodayScreen';
 
 const Navigator = StackNavigator({
-    Home: { screen: TodayScreen }
+    Today: { screen: TodayScreen }
 });
 
 export default class TodayNavigator extends Component {

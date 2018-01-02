@@ -25,12 +25,10 @@ class LoginScreen extends Component {
         }
     }
 
-    componentWillMount() {
-        console.log('login mount')
-    }
-
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps !== this.props) {
+        if (prevProps.isProcessing !== this.props.isProcessing
+            || prevProps.success !== this.props.success
+            || prevProps.error !== this.props.error) {
             if (this.props.success) {
                 this.props.navigation.navigate('App');
             }
