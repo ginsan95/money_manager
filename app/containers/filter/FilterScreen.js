@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Container } from '../../components/Container';
+import { Container } from '../../components';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import FilterList from './FilterList';
 import DayItem from '../../models/DayItem';

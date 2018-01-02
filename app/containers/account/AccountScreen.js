@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Button } from 'react-native';
-import { Container } from '../../components/Container';
+import { Container } from '../../components';
 import { NavigationActions } from 'react-navigation'
 import UserManager from '../../managers/UserManager';
 import { logout } from '../../api/API';

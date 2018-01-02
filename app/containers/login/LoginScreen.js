@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { login } from '../../actions/loginActions';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import ErrorDialog from '../../components/ErrorDialog';
-import ValidationTextInput from '../../components/ValidationTextInput';
+import { ErrorDialog, ValidationTextInput } from '../../components';
 
 class LoginScreen extends Component {
     static navigationOptions = {

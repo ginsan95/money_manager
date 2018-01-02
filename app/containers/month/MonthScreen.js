@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchItems, toggleExpend, changeYear } from '../../actions/monthActions';
 import MonthlyItemList from './MonthlyItemList';
-import { Container } from '../../components/Container';
+import { Container } from '../../components';
 import MonthItem from '../../models/MonthItem';
 import SelectedYearHeader from './SelectedYearHeader';
 import AddDayButton from './AddDayButton';
