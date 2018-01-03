@@ -16,16 +16,29 @@ export class MonthScreen extends Component {
         let options = {
             title: 'Monthly Spending'
         };
-        if (params && params.handleAddDay) {
-            options.headerRight = (<AddDayButton handleAddDay={params.handleAddDay}/>);
+        if (params && params.year && params.handleAddDay) {
+            options.headerRight = (
+                <AddDayButton 
+                    year={params.year}
+                    handleAddDay={params.handleAddDay}/>
+            );
         }
         return options;
     }
 
     componentWillMount() {
         this.props.navigation.setParams({
+            year: this.props.year,
             handleAddDay: this.handleAddDay
         });
+    }
+
+    componentWillUpdate(nextProps) {
+        if (nextProps.year !== this.props.year) {
+            this.props.navigation.setParams({
+                year: nextProps.year
+            })
+        }
     }
 
     gotoDayScreen = (items) => {

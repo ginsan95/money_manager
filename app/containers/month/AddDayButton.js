@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Button } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import PropTypes from 'prop-types';
 
 export default class AddDayButton extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ export default class AddDayButton extends Component {
     }
 
     render() {
-        const today = new Date();
+        const {year} = this.props;
         return (
             <View>
                 <Button title='+' onPress={this.handleShowDatePicker}/>
@@ -36,10 +37,15 @@ export default class AddDayButton extends Component {
                     isVisible={this.state.datePickerVisible}
                     onConfirm={this.handleSelectDate}
                     onCancel={this.handleDismissDatePicker}
-                    minimumDate={new Date(today.getFullYear(), 0, 1)}
-                    maximumDate={new Date(today.getFullYear(), 11, 31)}
+                    minimumDate={new Date(year, 0, 1)}
+                    maximumDate={new Date(year, 11, 31)}
                     mode='date'/>
             </View>
         );
     }
+}
+
+AddDayButton.propTypes = {
+    year: PropTypes.string.isRequired,
+    handleAddDay: PropTypes.func.isRequired
 }
